@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevisPro</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#2563eb;--blue2:#1d4ed8;
+  --glow:rgba(37,99,235,.2);
+  --bg:#070d1a;--surf:#0c1526;--surf2:#111d33;--surf3:#172240;
+  --ink:#e2eaf8;--ink2:#8b9dba;--ink3:#4d6080;
+  --bdr:rgba(255,255,255,.06);--bdr2:rgba(255,255,255,.11);
+  --ok:#10b981;--red:#f43f5e;--warn:#f59e0b;
+  --r:10px;--r2:14px;
+}
+html.light{
+  --bg:#f0f4ff;--surf:#fff;--surf2:#f5f8ff;--surf3:#eaeffc;
+  --ink:#0d1b2e;--ink2:#4a5e78;--ink3:#8fa3bc;
+  --bdr:rgba(0,0,0,.07);--bdr2:rgba(0,0,0,.12);
+  --glow:rgba(37,99,235,.1);
+  --ok:#059669;--red:#dc2626;--warn:#d97706;
+}
+
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes sw{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+@keyframes drift1{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-15px)}}
+@keyframes drift2{0%,100%{transform:translate(0,0)}50%{transform:translate(-15px,20px)}}
+@keyframes shimmer{0%{left:-100%}100%{left:200%}}
+
+html,body{height:100%}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--bg);color:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  min-height:100vh;padding:1.5rem;overflow:hidden;
+  font-size:14px;line-height:1.5;
+  transition:background .25s,color .25s;
+  position:relative;
+}
+
+/* Fond */
+.bg-fx{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.o1,.o2{position:absolute;border-radius:50%;filter:blur(90px);opacity:.4}
+.o1{width:500px;height:500px;top:-150px;left:-100px;background:radial-gradient(circle,rgba(37,99,235,.25),transparent 65%);animation:drift1 16s ease-in-out infinite}
+.o2{width:380px;height:380px;bottom:-100px;right:-80px;background:radial-gradient(circle,rgba(79,70,229,.18),transparent 65%);animation:drift2 20s ease-in-out infinite}
+.gr{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.024) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.024) 1px,transparent 1px);background-size:46px 46px;mask-image:radial-gradient(ellipse 75% 75% at 50% 50%,#000 0%,transparent 100%)}
+html.light .gr{background-image:linear-gradient(rgba(37,99,235,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(37,99,235,.04) 1px,transparent 1px)}
+html.light .o1,.light .o2{opacity:.25}
+
+/* Theme */
+.th{position:fixed;top:1.1rem;right:1.1rem;z-index:100;background:var(--surf);border:1px solid var(--bdr2);border-radius:40px;padding:6px 12px 6px 8px;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:var(--ink2);font-family:inherit;transition:.18s;backdrop-filter:blur(8px)}
+.th:hover{border-color:var(--blue);color:var(--blue)}
+
+/* ══ WRAP PRINCIPAL ══ */
+.wrap{
+  width:100%;max-width:860px;
+  display:flex;border-radius:20px;overflow:hidden;
+  border:1px solid var(--bdr2);
+  box-shadow:0 32px 80px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.03);
+  animation:up .45s cubic-bezier(.4,0,.2,1);
+  position:relative;z-index:1;
+}
+html.light .wrap{box-shadow:0 12px 48px rgba(37,99,235,.1),0 0 0 1px rgba(37,99,235,.07)}
+
+/* ══ PANNEAU GAUCHE ══ */
+.left{
+  width:42%;flex-shrink:0;
+  background:linear-gradient(160deg,#08112b 0%,#0c1a40 50%,#091530 100%);
+  padding:3rem 2rem;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  min-height:480px;
+}
+html.light .left{background:linear-gradient(160deg,#1240c4 0%,#2563eb 55%,#3a7cf5 100%)}
+
+/* Cercles déco */
+.lc1{position:absolute;width:320px;height:320px;border-radius:50%;border:1px solid rgba(255,255,255,.05);top:-80px;right:-80px;pointer-events:none}
+.lc2{position:absolute;width:200px;height:200px;border-radius:50%;border:1px solid rgba(255,255,255,.04);top:-20px;right:-20px;pointer-events:none}
+.lc3{position:absolute;width:260px;height:260px;border-radius:50%;border:1px solid rgba(255,255,255,.04);bottom:-80px;left:-80px;pointer-events:none}
+.lline{position:absolute;right:0;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,rgba(37,99,235,.45) 35%,rgba(37,99,235,.45) 65%,transparent)}
+.lglow{position:absolute;width:280px;height:280px;border-radius:50%;filter:blur(80px);background:rgba(37,99,235,.18);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;animation:pulse 5s ease-in-out infinite}
+
+/* Logo centré */
+.brand{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;
+  align-items:center;gap:0;
+}
+
+/* Icône logo grande et stylée */
+.bicon{
+  width:90px;height:90px;border-radius:26px;
+  background:linear-gradient(145deg,rgba(255,255,255,.18) 0%,rgba(255,255,255,.06) 100%);
+  border:1px solid rgba(255,255,255,.22);
+  display:grid;place-items:center;
+  font-size:42px;font-weight:900;color:#fff;
+  flex-shrink:0;
+  box-shadow:
+    0 16px 48px rgba(0,0,0,.45),
+    0 0 0 1px rgba(255,255,255,.05),
+    inset 0 1px 0 rgba(255,255,255,.25),
+    inset 0 -1px 0 rgba(0,0,0,.15);
+  position:relative;overflow:hidden;
+  margin-bottom:1.8rem;
+  backdrop-filter:blur(8px);
+  letter-spacing:-2px;
+}
+.bicon::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.18) 0%,transparent 50%);
+  border-radius:22px;
+}
+.bicon::after{
+  content:'';position:absolute;
+  top:0;left:-60%;width:40%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
+  animation:shimmer 4s infinite 2s;
+}
+
+/* Nom du logo */
+.bname{
+  font-size:30px;font-weight:900;color:#fff;
+  letter-spacing:-1px;line-height:1;
+  text-align:center;
+}
+.bname em{
+  color:rgba(147,197,253,1);
+  font-style:normal;
+}
+.bdot{
+  display:inline-block;width:6px;height:6px;
+  background:#93c5fd;border-radius:50%;
+  margin-left:2px;margin-bottom:3px;
+  animation:pulse 2.5s infinite;
+}
+
+/* Trait décoratif sous le nom */
+.bline{
+  width:50px;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(147,197,253,.6),transparent);
+  border-radius:2px;margin:12px auto 12px;
+}
+
+.btag{
+  font-size:10px;color:rgba(255,255,255,.3);
+  letter-spacing:1px;font-weight:600;
+  text-transform:uppercase;text-align:center;
+}
+
+/* Version */
+.lver{
+  position:absolute;bottom:1.1rem;
+  font-size:9px;color:rgba(255,255,255,.18);
+  letter-spacing:.2px;text-align:center;z-index:1;
+}
+
+/* ══ PANNEAU DROIT ══ */
+.right{
+  flex:1;background:var(--surf);
+  padding:2.5rem 2.5rem;
+  display:flex;flex-direction:column;
+  justify-content:flex-start;
+  position:relative;
+}
+html.light .right{background:#fff}
+.right::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 10%,var(--blue) 40%,var(--blue2) 60%,transparent 90%);opacity:.3}
+
+/* Views */
+.view{display:none;flex-direction:column;flex:1;animation:sw .2s ease;width:100%}
+.view.show{display:flex}
+
+/* La liste entreprises prend l'espace restant */
+#v-list{justify-content:space-between}
+.cg{
+  display:flex;flex-direction:column;gap:6px;
+  flex:1;overflow-y:auto;
+  padding-right:2px;margin-bottom:.75rem;
+  max-height:none;
+}
+.vtitle{font-size:19px;font-weight:700;color:var(--ink);margin-bottom:3px;letter-spacing:-.35px}
+html.light .vtitle{color:#0d1b2e}
+.vsub{font-size:13px;color:var(--ink2);margin-bottom:1.35rem;line-height:1.55}
+
+/* Session bar */
+.session-bar{
+  display:none;align-items:center;gap:8px;flex-wrap:wrap;
+  background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.2);
+  border-left:3px solid var(--ok);border-radius:var(--r);
+  padding:9px 12px;margin-bottom:1.25rem;
+  font-size:12.5px;color:var(--ok);
+}
+.session-bar.show{display:flex}
+.session-bar strong{color:var(--ink);font-weight:600}
+.sg{margin-left:auto;background:var(--ok);color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s}
+.sg:hover{filter:brightness(1.1)}
+.sc{background:transparent;border:1px solid var(--bdr2);color:var(--ink3);font-size:11px;cursor:pointer;font-family:inherit;border-radius:6px;padding:3px 9px;transition:.15s}
+.sc:hover{color:var(--red);border-color:var(--red)}
+
+/* Forms */
+.fg{margin-bottom:.8rem}
+.fg label{display:block;font-size:10.5px;font-weight:600;color:var(--ink3);margin-bottom:5px;text-transform:uppercase;letter-spacing:.55px}
+.fg input,.fg select{width:100%;padding:10px 12px;font-size:13.5px;border:1px solid var(--bdr2);border-radius:var(--r);background:var(--surf2);color:var(--ink);font-family:'Inter',inherit;outline:none;transition:.16s}
+.fg input:focus,.fg select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.13);background:var(--surf3)}
+html.light .fg input,html.light .fg select{background:#f8fbff;border-color:rgba(37,99,235,.18)}
+html.light .fg input:focus,html.light .fg select:focus{background:#fff;border-color:var(--blue)}
+html.light .fg select option{background:#fff}
+.fg .hint{font-size:11px;color:var(--ink3);margin-top:3px;line-height:1.5}
+
+/* Sep */
+.sep{display:flex;align-items:center;gap:8px;margin:.6rem 0 .8rem;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--ink3)}
+.sep::before,.sep::after{content:'';flex:1;height:1px;background:var(--bdr2)}
+
+/* Btn */
+.btn{width:100%;padding:11px;border-radius:var(--r);font-size:14px;font-weight:700;cursor:pointer;border:none;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;font-family:'Inter',inherit;transition:.18s;margin-top:.4rem;display:flex;align-items:center;justify-content:center;gap:7px;position:relative;overflow:hidden;box-shadow:0 4px 16px rgba(37,99,235,.3)}
+.btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.12),transparent 60%)}
+.btn:hover{transform:translateY(-1px);box-shadow:0 7px 22px rgba(37,99,235,.42);filter:brightness(1.05)}
+.btn:active{transform:none}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* Links */
+.back{font-size:12.5px;color:var(--ink3);cursor:pointer;text-align:center;display:block;margin-top:.85rem;font-weight:500;transition:.15s}
+.back:hover{color:var(--blue)}
+.lrow{display:flex;gap:.5rem;justify-content:center;margin-top:.9rem;flex-wrap:wrap;align-items:center}
+.lnk{font-size:12.5px;color:var(--blue);cursor:pointer;font-weight:500;transition:.15s}
+.lnk:hover{opacity:.7}
+.ldot{color:var(--bdr2)}
+
+/* Errors */
+.err{font-size:12.5px;color:var(--red);background:rgba(244,63,94,.07);border:1px solid rgba(244,63,94,.18);border-left:3px solid var(--red);border-radius:var(--r);padding:8px 11px;margin-bottom:.75rem;display:none;line-height:1.4}
+.err.show{display:block}
+.ok-msg{font-size:12.5px;color:var(--ok);background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.2);border-left:3px solid var(--ok);border-radius:var(--r);padding:8px 11px;margin-bottom:.75rem;display:none}
+.ok-msg.show{display:block}
+
+/* Badges */
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600;margin-bottom:.7rem}
+.badge-cloud{background:rgba(37,99,235,.1);color:var(--blue);border:1px solid rgba(37,99,235,.22)}
+.badge-local{background:var(--surf2);color:var(--ink3);border:1px solid var(--bdr2)}
+
+/* Company cards */
+.cg::-webkit-scrollbar{width:3px}
+.cg::-webkit-scrollbar-thumb{background:var(--bdr2);border-radius:10px}
+.co{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 13px;border:1px solid var(--bdr);
+  border-radius:var(--r2);cursor:pointer;
+  background:var(--surf2);transition:.18s;
+  position:relative;overflow:hidden;
+  min-height:0;
+}
+.co::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--blue),var(--blue2));opacity:0;transition:.18s}
+.co:hover{border-color:rgba(37,99,235,.32);background:var(--surf3);transform:translateX(3px)}
+.co:hover::before{opacity:1}
+html.light .co{background:#f8fbff;border-color:rgba(37,99,235,.1)}
+html.light .co:hover{background:#eef4ff;border-color:rgba(37,99,235,.28)}
+/* Avatar — taille fixe stricte */
+.coav{
+  width:36px;height:36px;min-width:36px;
+  border-radius:8px;
+  display:grid;place-items:center;
+  font-size:12px;font-weight:700;color:#fff;
+  flex-shrink:0;overflow:hidden;
+  box-shadow:0 2px 8px rgba(0,0,0,.25);
+  background:var(--surf3);
+}
+.coav img{
+  width:36px;height:36px;
+  object-fit:cover;object-position:center;
+  border-radius:8px;display:block;
+  flex-shrink:0;
+}
+/* Infos — tronquées proprement */
+.coi{flex:1;min-width:0;overflow:hidden}
+.coname{
+  font-size:13px;font-weight:600;color:var(--ink);
+  display:flex;align-items:center;gap:5px;
+  overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+  max-width:100%;
+}
+.coname-txt{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;flex:1;min-width:0}
+.cosec{
+  font-size:11px;color:var(--ink3);margin-top:1px;
+  overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+}
+.cor{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.coarr{color:var(--ink3);font-size:13px;transition:.18s;flex-shrink:0}
+.co:hover .coarr{color:var(--blue);transform:translateX(2px)}
+.codel{background:none;border:none;font-size:11px;color:var(--red);cursor:pointer;opacity:0;transition:.15s;font-family:inherit;padding:1px 5px;flex-shrink:0}
+.co:hover .codel{opacity:.5}
+.codel:hover{opacity:1!important}
+.cpill{font-size:9px;background:rgba(37,99,235,.1);color:var(--blue);border:1px solid rgba(37,99,235,.2);border-radius:20px;padding:1px 6px;font-weight:700;white-space:nowrap;flex-shrink:0}
+.empty-co{text-align:center;padding:1.75rem;color:var(--ink3);font-size:13px;line-height:2}
+
+/* Key box */
+.kbox{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(37,99,235,.07);border:1px solid rgba(37,99,235,.2);border-radius:var(--r);padding:12px 14px;color:var(--blue);font-weight:500;word-break:break-all;text-align:center;margin-bottom:.75rem}
+
+/* Info */
+.info{background:var(--surf2);border:1px solid var(--bdr2);border-radius:var(--r);padding:12px 14px;margin-bottom:.85rem}
+.istep{display:flex;gap:9px;align-items:flex-start;margin-bottom:7px;font-size:12px;color:var(--ink2);line-height:1.55}
+.istep:last-child{margin-bottom:0}
+.inum{width:18px;height:18px;border-radius:50%;background:var(--blue);color:#fff;font-size:9px;font-weight:700;display:grid;place-items:center;flex-shrink:0;margin-top:1px}
+.istep b{color:var(--ink);font-weight:600}
+
+#import-apikey-warn{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.22);border-left:3px solid var(--warn);border-radius:var(--r);padding:8px 11px;margin-bottom:.75rem;font-size:12px;color:var(--warn);display:none}
+#import-apikey-warn.show{display:block}
+
+.spin{animation:spin .7s linear infinite;display:inline-block}
+
+/* Mobile */
+@media(max-width:680px){
+  body{padding:.85rem;align-items:flex-start;padding-top:1rem}
+  .wrap{flex-direction:column;border-radius:16px;height:auto;min-height:unset}
+  .left{width:100%;padding:1.1rem 1.25rem .85rem;flex-direction:row;align-items:center;gap:14px;min-height:unset;height:auto}
+  .brand{margin-bottom:0;flex-shrink:0;flex-direction:row;align-items:center;gap:10px}
+  .bicon{width:36px;height:36px;border-radius:10px;font-size:16px;margin-bottom:0}
+  .bline{display:none}
+  .bname{font-size:17px;text-align:left}
+  .btag{font-size:8px;text-align:left}
+  .lmid,.lver,.lc1,.lc2,.lc3,.lglow,.lline{display:none}
+  .right{padding:1.25rem;height:auto;justify-content:flex-start}
+  .vtitle{font-size:17px}
+  .cg{max-height:none}
+  .co{padding:10px 12px}
+  .lrow{flex-direction:column;gap:.35rem}
+  .ldot{display:none}
+  .th{top:10px;right:10px;padding:5px 10px;font-size:11px}
+}
+@media(max-width:380px){.right{padding:1rem}.bname{font-size:16px}}
+</style>
+</head>
+<body>
+
+<div class="bg-fx">
+  <div class="o1"></div><div class="o2"></div>
+  <div class="gr"></div>
+</div>
+
+<button class="th" id="th-btn" onclick="toggleTheme()">
+  <span id="th-icon">🌙</span><span id="th-lbl">Sombre</span>
+</button>
+
+<div class="wrap">
+
+  <!-- ══ GAUCHE ══ -->
+  <div class="left">
+    <div class="lc1"></div><div class="lc2"></div><div class="lc3"></div>
+    <div class="lline"></div><div class="lglow"></div>
+
+    <!-- Logo centré uniquement -->
+    <div class="brand">
+      <div class="bicon">D</div>
+      <div class="bname">Devis<em>Pro</em><span class="bdot"></span></div>
+      <div class="bline"></div>
+      <div class="btag">Gestion commerciale</div>
+    </div>
+
+    <div class="lver">v2.0 · Abe Regis Démosthène · Abidjan CI</div>
+  </div>
+
+  <!-- ══ DROITE ══ -->
+  <div class="right">
+
+    <div class="session-bar" id="session-bar">
+      <span>✓</span><strong id="session-txt"></strong>
+      <button class="sg" onclick="goToApp()">Continuer →</button>
+      <button class="sc" onclick="logout()">Changer</button>
+    </div>
+
+    <!-- Liste -->
+    <div class="view show" id="v-list">
+      <div class="vtitle">Choisir un espace</div>
+      <div class="vsub" id="list-sub">Sélectionnez votre entreprise pour continuer.</div>
+      <div class="cg" id="cg"></div>
+      <div class="lrow">
+        <span class="lnk" onclick="show('v-create')">+ Créer un espace</span>
+        <span class="ldot">·</span>
+        <span class="lnk" onclick="show('v-import')">☁ Récupérer</span>
+        <span class="ldot">·</span>
+        <span class="lnk" onclick="show('v-apikey')" style="color:var(--ink3);font-weight:400">⚙ Sync</span>
+      </div>
+    </div>
+
+    <!-- Connexion -->
+    <div class="view" id="v-login">
+      <div class="vtitle">Connexion</div>
+      <div class="vsub" id="login-sub">Entrez votre mot de passe pour accéder à cet espace.</div>
+      <div id="login-badge" class="badge badge-local" style="display:none"></div>
+      <div class="err" id="login-err"></div>
+      <div class="fg">
+        <label>Mot de passe</label>
+        <input type="password" id="pwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <button class="btn" id="login-btn" onclick="doLogin()"><span id="login-btn-txt">Se connecter →</span></button>
+      <span class="back" onclick="show('v-list')">← Retour</span>
+    </div>
+
+    <!-- Créer -->
+    <div class="view" id="v-create">
+      <div class="vtitle">Nouvel espace</div>
+      <div class="vsub">Créez votre espace de gestion commerciale.</div>
+      <div class="err" id="create-err"></div>
+      <div class="fg"><label>Nom de l'entreprise *</label><input type="text" id="c-nom" placeholder="Ex : ARD Réseaux & Télécoms"></div>
+      <div class="fg"><label>Secteur d'activité</label><input type="text" id="c-secteur" placeholder="Informatique, BTP, Commerce…"></div>
+      <div class="sep">Sécurité</div>
+      <div class="fg"><label>Mot de passe *</label><input type="password" id="c-pwd" placeholder="Minimum 4 caractères"></div>
+      <div class="fg"><label>Confirmer *</label><input type="password" id="c-pwd2" placeholder="Répétez le mot de passe"></div>
+      <div class="fg">
+        <label>Synchronisation cloud</label>
+        <select id="c-sync-choice" onchange="toggleSyncKey()">
+          <option value="no">Non — stockage local uniquement</option>
+          <option value="auto">Oui — clé générée automatiquement</option>
+          <option value="custom">Oui — utiliser ma propre clé</option>
+        </select>
+      </div>
+      <div class="fg" id="custom-sync-wrap" style="display:none">
+        <label>Ma clé</label>
+        <input type="text" id="c-sync-custom" placeholder="Ex : ARD-CI-2026" style="font-family:'JetBrains Mono',monospace;font-size:12px">
+        <div class="hint">Lettres, chiffres et tirets uniquement.</div>
+      </div>
+      <button class="btn" id="create-btn" onclick="doCreate()"><span id="create-btn-txt">Créer l'espace →</span></button>
+      <span class="back" onclick="show('v-list')">← Retour</span>
+    </div>
+
+    <!-- Clé créée -->
+    <div class="view" id="v-key-created">
+      <div class="vtitle">Espace créé ✓</div>
+      <div class="vsub">Notez votre clé de synchronisation — elle ne peut pas être récupérée si perdue.</div>
+      <div class="kbox" id="generated-key-display">—</div>
+      <p style="font-size:12px;color:var(--ok);font-weight:600;margin-bottom:1rem">⚠ Copiez et conservez cette clé.</p>
+      <button class="btn" onclick="copyKeyAndGo()">📋 Copier et accéder à l'application</button>
+      <span class="back" onclick="goToApp()">Continuer sans copier</span>
+    </div>
+
+    <!-- Config sync -->
+    <div class="view" id="v-apikey">
+      <div class="vtitle">Synchronisation cloud</div>
+      <div class="vsub">Configurez votre clé JSONBin.io.</div>
+      <div class="err" id="apikey-err"></div>
+      <div class="info">
+        <div class="istep"><div class="inum">1</div><div>Allez sur <b>jsonbin.io</b> et créez un compte gratuit</div></div>
+        <div class="istep"><div class="inum">2</div><div>Profil → <b>API Keys</b></div></div>
+        <div class="istep"><div class="inum">3</div><div>Copiez la <b>Master Key</b> ($2a$…) et collez-la ci-dessous</div></div>
+      </div>
+      <div class="fg">
+        <label>Master Key JSONBin</label>
+        <input type="text" id="apikey-input" placeholder="$2a$10$…" style="font-family:'JetBrains Mono',monospace;font-size:11.5px">
+        <div class="hint">Sauvegardée uniquement sur cet appareil.</div>
+      </div>
+      <button class="btn" id="apikey-btn" onclick="saveApiKey()"><span id="apikey-btn-txt">Valider la clé →</span></button>
+      <span class="back" onclick="show('v-list')">← Annuler</span>
+    </div>
+
+    <!-- Récupérer -->
+    <div class="view" id="v-import">
+      <div class="vtitle">Récupérer mes données</div>
+      <div class="vsub">Entrez votre Bin ID pour restaurer depuis le cloud.</div>
+      <div class="err" id="import-err"></div>
+      <div class="ok-msg" id="import-ok"></div>
+      <div id="import-apikey-warn">⚠ Clé API non configurée. <span style="text-decoration:underline;cursor:pointer;font-weight:600" onclick="show('v-apikey')">Configurer →</span></div>
+      <div class="fg">
+        <label>Bin ID</label>
+        <input type="text" id="i-key" placeholder="6720a1b2acd3cb34f8e9c123" style="font-family:'JetBrains Mono',monospace;font-size:12px">
+        <div class="hint">L'identifiant généré à la création de l'espace.</div>
+      </div>
+      <div class="fg">
+        <label>Mot de passe</label>
+        <input type="password" id="i-pwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')doImport()">
+      </div>
+      <button class="btn" id="import-btn" onclick="doImport()"><span id="import-btn-txt">☁ Récupérer mes données →</span></button>
+      <span class="back" onclick="show('v-list')">← Retour</span>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleTheme(){
+  const isLight=document.documentElement.classList.toggle('light');
+  localStorage.setItem('dp3_theme',isLight?'light':'dark');
+  document.getElementById('th-icon').textContent=isLight?'☀️':'🌙';
+  document.getElementById('th-lbl').textContent=isLight?'Clair':'Sombre';
+}
+(function(){
+  const t=localStorage.getItem('dp3_theme');
+  const sys=window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const light=t?t==='light':!sys;
+  if(light)document.documentElement.classList.add('light');
+  document.getElementById('th-icon').textContent=light?'☀️':'🌙';
+  document.getElementById('th-lbl').textContent=light?'Clair':'Sombre';
+})();
+
+function show(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('show'));
+  document.getElementById(id).classList.add('show');
+  ['login-err','create-err','import-err','apikey-err'].forEach(e=>{
+    const el=document.getElementById(e);if(el)el.classList.remove('show');
+  });
+  const ok=document.getElementById('import-ok');if(ok)ok.classList.remove('show');
+  if(id==='v-list')renderGrid();
+  if(id==='v-login')setTimeout(()=>document.getElementById('pwd').focus(),80);
+  if(id==='v-create')setTimeout(()=>document.getElementById('c-nom').focus(),80);
+  if(id==='v-import'){
+    const w=document.getElementById('import-apikey-warn');
+    if(w)w.classList.toggle('show',!getUserApiKey());
+    setTimeout(()=>document.getElementById('i-key').focus(),80);
+  }
+  if(id==='v-apikey'){
+    const inp=document.getElementById('apikey-input');
+    if(inp){inp.value=getUserApiKey();setTimeout(()=>inp.focus(),80);}
+  }
+}
+
+
+
+
+
+
+
+
+
+/* ── THEME ── */
+
+
+
+/* ── NAVIGATION ── */
+
+/* ── JS MÉTIER (injecté) ── */
+
+// Particules flottantes
+(function(){
+  const c=document.getElementById('pts');if(!c)return;
+  for(let i=0;i<20;i++){
+    const p=document.createElement('div');p.className='pt';
+    const size=1+Math.random()*2;
+    p.style.cssText=`left:${Math.random()*100}%;top:${80+Math.random()*20}%;width:${size}px;height:${size}px;animation-duration:${6+Math.random()*10}s;animation-delay:${Math.random()*8}s;opacity:${.15+Math.random()*.35}`;
+    c.appendChild(p);
+  }
+})();
+
+
+// ══════════════════════════════════════════════════
+// SYNC CLOUD via JSONBin.io
+// L'utilisateur crée son propre compte gratuit sur
+// jsonbin.io et colle sa clé Master Key ici ou
+// dans les paramètres de l'app
+// ══════════════════════════════════════════════════
+const JBIN_URL = 'https://api.jsonbin.io/v3/b';
+
+function getUserApiKey(){
+  return localStorage.getItem('dp_jbin_key')||'';
+}
+
+async function cloudSave(binId, data){
+  const key = getUserApiKey();
+  if(!key||!binId) return false;
+  try{
+    const res = await fetch(`${JBIN_URL}/${binId}`, {
+      method: 'PUT',
+      headers: {'Content-Type':'application/json','X-Master-Key':key},
+      body: JSON.stringify({data, updatedAt: new Date().toISOString()})
+    });
+    return res.ok;
+  }catch(e){ return false; }
+}
+
+async function cloudLoad(binId){
+  const key = getUserApiKey();
+  if(!key||!binId) return null;
+  try{
+    const res = await fetch(`${JBIN_URL}/${binId}/latest`, {
+      headers: {'X-Master-Key':key}
+    });
+    if(!res.ok) return null;
+    const j = await res.json();
+    return j.record || null;
+  }catch(e){ return null; }
+}
+
+async function cloudCreate(data){
+  const key = getUserApiKey();
+  if(!key) return null;
+  try{
+    const res = await fetch(JBIN_URL, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','X-Master-Key':key,'X-Bin-Private':'false'},
+      body: JSON.stringify({data, updatedAt: new Date().toISOString()})
+    });
+    if(!res.ok) return null;
+    const j = await res.json();
+    return j.metadata?.id || null;
+  }catch(e){ return null; }
+}
+
+
+
+
+
+function getCompanies(){return JSON.parse(localStorage.getItem('dp_companies')||'[]');}
+function saveCompanies(a){localStorage.setItem('dp_companies',JSON.stringify(a));}
+function hashPwd(p){let h=0;for(let i=0;i<p.length;i++)h=Math.imul(31,h)+p.charCodeAt(i)|0;return 'h'+Math.abs(h).toString(36)+p.length;}
+function compKey(id,k){return `dp_${id}_${k}`;}
+function genKey(nom){
+  const c=nom.toUpperCase().replace(/[^A-Z0-9]/g,'').substring(0,5)||'APP';
+  const r=Math.random().toString(36).substring(2,6).toUpperCase();
+  return c+'-'+new Date().getFullYear()+'-'+r;
+}
+
+
+// Les fonctions cloudSave / cloudLoad / cloudCreate sont définées au-dessus
+
+
+function toggleSyncKey(){
+  const c=document.getElementById('c-sync-choice').value;
+  document.getElementById('custom-sync-wrap').style.display=c==='custom'?'block':'none';
+}
+
+const GRADS=['135deg,#0074d9,#004a96','135deg,#00c6ff,#0099cc','135deg,#f97316,#ea580c','135deg,#10b981,#059669','135deg,#7c3aed,#5b21b6'];
+let pendingId=null;
+
+function renderGrid(){
+  const cos=getCompanies();
+  const grid=document.getElementById('cg');
+  const sub=document.getElementById('list-sub');
+  const saved=localStorage.getItem('dp_session');
+  const bar=document.getElementById('session-bar');
+  const stxt=document.getElementById('session-txt');
+  if(saved){
+    const s=JSON.parse(saved);
+    if(cos.find(c=>c.id===s.id)){
+      bar.classList.add('show');
+      stxt.textContent=s.nom;
+    } else {
+      localStorage.removeItem('dp_session');
+      bar.classList.remove('show');
+    }
+  } else {bar.classList.remove('show');}
+
+  sub.textContent=cos.length?cos.length+' espace'+(cos.length>1?'s':'')+' disponible'+(cos.length>1?'s':''):'Aucun espace — commencez par en creer un';
+  if(!cos.length){
+    grid.innerHTML='<div class="empty-co"><div class="empty-co-icon">🏢</div><div>Aucune entreprise enregistree.<br>Cliquez sur &ldquo;+ Creer une entreprise&rdquo;</div></div>';
+    return;
+  }
+  grid.innerHTML=cos.map(function(c,i){
+    const ini=c.nom.trim().split(' ').map(function(w){return w[0];}).join('').substring(0,2).toUpperCase();
+    const g=GRADS[i%GRADS.length];
+    const av=c.logo
+      ?('<img src="'+c.logo+'" alt="" style="width:36px;height:36px;object-fit:cover;object-position:center;border-radius:8px;display:block">')
+      :'<span>'+ini+'</span>';
+    const bgStyle=c.logo?'background:var(--surf3)':'background:linear-gradient('+g+')';
+    const cloud=c.syncKey?('<span class="cpill">☁ sync</span>'):'';
+    const secteur=(c.secteur||'Secteur non défini');
+    // Tronquer le secteur à 40 caractères
+    const secteurTxt=secteur.length>40?secteur.substring(0,38)+'…':secteur;
+    return '<div class="co" onclick="selectCo(\''+c.id+'\')">'+
+      '<div class="coav" style="'+bgStyle+'">'+av+'</div>'+
+      '<div class="coi">'+
+        '<div class="coname"><span class="coname-txt">'+c.nom+'</span>'+cloud+'</div>'+
+        '<div class="cosec">'+secteurTxt+'</div>'+
+      '</div>'+
+      '<div class="cor">'+
+        '<span class="coarr">›</span>'+
+        '<button class="codel" onclick="event.stopPropagation();delCo(\''+c.id+'\')" title="Supprimer">✕</button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+function delCo(id){
+  if(!confirm('Supprimer cet espace et toutes ses donnees locales ?'))return;
+  saveCompanies(getCompanies().filter(function(c){return c.id!==id;}));
+  const saved=localStorage.getItem('dp_session');
+  if(saved&&JSON.parse(saved).id===id)localStorage.removeItem('dp_session');
+  renderGrid();
+}
+function goToApp(){window.location.href='devis-pro.html';}
+function logout(){localStorage.removeItem('dp_session');renderGrid();}
+
+async function saveApiKey(){
+  const key=document.getElementById('apikey-input').value.trim();
+  const err=document.getElementById('apikey-err');
+  const btn=document.getElementById('apikey-btn');
+  const txt=document.getElementById('apikey-btn-txt');
+  if(!key||!key.startsWith('$2a$')){
+    err.textContent='Cle invalide. Elle doit commencer par $2a$...';
+    err.classList.add('show');return;
+  }
+  // Tester la clé
+  txt.innerHTML='<span class="spin">⟳</span> Validation...';
+  btn.disabled=true;
+  try{
+    const res=await fetch('https://api.jsonbin.io/v3/b',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','X-Master-Key':key,'X-Bin-Private':'false'},
+      body:JSON.stringify({test:'devispro',ts:Date.now()})
+    });
+    if(res.ok){
+      const j=await res.json();
+      // Stocker la clé
+      localStorage.setItem('dp_jbin_key',key);
+      // Supprimer le bin de test
+      if(j.metadata?.id){
+        fetch('https://api.jsonbin.io/v3/b/'+j.metadata.id,{method:'DELETE',headers:{'X-Master-Key':key}}).catch(()=>{});
+      }
+      txt.textContent='Valider la cle →';btn.disabled=false;
+      // Retourner à la vue précédente
+      alert('✅ Cle validee et sauvegardee ! Vous pouvez maintenant activer la sync cloud.');
+      show('v-list');
+    } else {
+      err.textContent='Cle incorrecte ou expirée. Verifiez sur jsonbin.io → API Keys.';
+      err.classList.add('show');
+      txt.textContent='Valider la cle →';btn.disabled=false;
+    }
+  }catch(e){
+    err.textContent='Impossible de contacter JSONBin. Verifiez votre connexion.';
+    err.classList.add('show');
+    txt.textContent='Valider la cle →';btn.disabled=false;
+  }
+}
+
+function selectCo(id){
+  pendingId=id;
+  const c=getCompanies().find(function(x){return x.id===id;});
+  document.getElementById('login-sub').textContent='Connexion — '+c.nom;
+  document.getElementById('pwd').value='';
+  const badge=document.getElementById('login-badge');
+  if(c.syncKey){
+    badge.className='badge badge-cloud';
+    badge.innerHTML='☁ Cle sync : <strong style="font-family:DM Mono,monospace">'+c.syncKey+'</strong>';
+    badge.style.display='inline-flex';
+  } else {
+    badge.className='badge badge-local';
+    badge.textContent='Stockage local uniquement';
+    badge.style.display='inline-flex';
+  }
+  show('v-login');
+}
+
+async function doLogin(){
+  const cos=getCompanies();
+  const c=cos.find(function(x){return x.id===pendingId;});
+  const pwd=document.getElementById('pwd').value;
+  const err=document.getElementById('login-err');
+  const btn=document.getElementById('login-btn');
+  const txt=document.getElementById('login-btn-txt');
+  if(!pwd){err.textContent='Veuillez saisir un mot de passe';err.classList.add('show');return;}
+  if(c.password!==hashPwd(pwd)){err.textContent='Mot de passe incorrect';err.classList.add('show');document.getElementById('pwd').value='';return;}
+  err.classList.remove('show');
+  // Si sync cloud activée → télécharger les données fraîches
+  if(c.syncKey){
+    txt.innerHTML='<span class="spin">⟳</span> Chargement depuis le cloud...';
+    btn.disabled=true;
+    const record=await cloudLoad(c.syncKey);
+    if(record&&record.data){
+      const data=record.data;
+      const k=function(key){return compKey(c.id,key);};
+      ['docs','clients','catalogue','projets','params','counters'].forEach(function(key){
+        if(data[key]!==undefined)localStorage.setItem(k(key),JSON.stringify(data[key]));
+      });
+    }
+    txt.textContent='Se connecter →';
+    btn.disabled=false;
+  }
+  localStorage.setItem('dp_session',JSON.stringify({id:c.id,nom:c.nom,syncKey:c.syncKey||null}));
+  window.location.href='devis-pro.html';
+}
+
+async function doCreate(){
+  const nom=document.getElementById('c-nom').value.trim();
+  const secteur=document.getElementById('c-secteur').value.trim();
+  const pwd=document.getElementById('c-pwd').value;
+  const pwd2=document.getElementById('c-pwd2').value;
+  const choice=document.getElementById('c-sync-choice').value;
+  const err=document.getElementById('create-err');
+  const btn=document.getElementById('create-btn');
+  const txt=document.getElementById('create-btn-txt');
+  if(!nom){err.textContent='Le nom est obligatoire';err.classList.add('show');return;}
+  if(!pwd||pwd.length<4){err.textContent='Mot de passe trop court (min. 4 caracteres)';err.classList.add('show');return;}
+  if(pwd!==pwd2){err.textContent='Les mots de passe ne correspondent pas';err.classList.add('show');return;}
+  err.classList.remove('show');
+  txt.innerHTML='<span class="spin">⟳</span> Creation en cours...';
+  btn.disabled=true;
+
+  const id='co_'+Date.now().toString(36);
+  const defParams={nom:nom,secteur:secteur,tel:'',email:'',adresse:'',rccm:'',mentions:'Devis valable 30 jours.',logo:null,profilePhoto:null,prefixDevis:'DEV',prefixProforma:'PRO',prefixFacture:'FAC',footerAdresse:'',footerTel:'',footerEmail:'',banque:'',iban:'',mobileMoney:'',footerText:''};
+  const defData={docs:[],clients:[],catalogue:[],projets:[],params:defParams,counters:{devis:1,proforma:1,facture:1}};
+
+  // Sauvegarder en local d'abord
+  const k=function(key){return compKey(id,key);};
+  Object.keys(defData).forEach(function(key){localStorage.setItem(k(key),JSON.stringify(defData[key]));});
+
+  let syncKey=null;
+  if(choice==='auto'||choice==='custom'){
+    txt.innerHTML='<span class="spin">⟳</span> Creation du cloud...';
+    // Créer un bin JSONBin → l'ID du bin devient la clé de sync
+    const binId=await cloudCreate({data:defData});
+    if(binId){
+      syncKey=binId; // La clé = l'ID du bin JSONBin
+    } else {
+      err.textContent='Cloud indisponible. Espace cree en local uniquement.';
+      err.classList.add('show');
+    }
+  }
+
+  const cos=getCompanies();
+  cos.push({id:id,nom:nom,secteur:secteur,password:hashPwd(pwd),syncKey:syncKey,logo:null,createdAt:new Date().toISOString()});
+  saveCompanies(cos);
+  localStorage.setItem('dp_session',JSON.stringify({id:id,nom:nom,syncKey:syncKey}));
+  txt.textContent="Creer l'espace →";
+  btn.disabled=false;
+  ['c-nom','c-secteur','c-pwd','c-pwd2'].forEach(function(x){document.getElementById(x).value='';});
+  document.getElementById('c-sync-choice').value='no';
+  document.getElementById('custom-sync-wrap').style.display='none';
+
+  if(syncKey){
+    // Afficher la clé (= ID du bin) avant de continuer
+    document.getElementById('generated-key-display').textContent=syncKey;
+    show('v-key-created');
+  } else {
+    window.location.href='devis-pro.html';
+  }
+}
+
+function copyKeyAndGo(){
+  const key=document.getElementById('generated-key-display').textContent;
+  if(navigator.clipboard)navigator.clipboard.writeText(key).catch(function(){});
+  goToApp();
+}
+
+async function doImport(){
+  // La clé de sync = l'ID du bin JSONBin
+  const syncKey=document.getElementById('i-key').value.trim().replace(/\s/g,'');
+  const pwd=document.getElementById('i-pwd').value;
+  const err=document.getElementById('import-err');
+  const okMsg=document.getElementById('import-ok');
+  const btn=document.getElementById('import-btn');
+  const txt=document.getElementById('import-btn-txt');
+  if(!syncKey){err.textContent='La cle de synchronisation est obligatoire';err.classList.add('show');return;}
+  if(!pwd){err.textContent='Le mot de passe est obligatoire';err.classList.add('show');return;}
+  err.classList.remove('show');okMsg.classList.remove('show');
+  txt.innerHTML='<span class="spin">⟳</span> Connexion au cloud...';
+  btn.disabled=true;
+
+  const record=await cloudLoad(syncKey);
+  if(!record||!record.data){
+    err.textContent='Cle introuvable. Verifiez que vous avez bien copie la cle exacte (ID JSONBin).';
+    err.classList.add('show');
+    txt.textContent='☁ Recuperer mes donnees →';
+    btn.disabled=false;
+    return;
+  }
+
+  txt.innerHTML='<span class="spin">⟳</span> Telechargement...';
+  const data=record.data;
+  const nom=data.params&&data.params.nom?data.params.nom:'Entreprise importee';
+  const secteur=data.params&&data.params.secteur?data.params.secteur:'';
+  const cos=getCompanies();
+  const existing=cos.find(function(c){return c.syncKey===syncKey;});
+  let compId;
+  if(existing){
+    compId=existing.id;
+    const k2=function(key){return compKey(compId,key);};
+    ['docs','clients','catalogue','projets','params','counters'].forEach(function(key){
+      if(data[key]!==undefined)localStorage.setItem(k2(key),JSON.stringify(data[key]));
+    });
+  } else {
+    compId='co_'+Date.now().toString(36);
+    const k3=function(key){return compKey(compId,key);};
+    ['docs','clients','catalogue','projets','params','counters'].forEach(function(key){
+      if(data[key]!==undefined)localStorage.setItem(k3(key),JSON.stringify(data[key]));
+    });
+    cos.push({id:compId,nom:nom,secteur:secteur,password:hashPwd(pwd),syncKey:syncKey,logo:data.params&&data.params.logo?data.params.logo:null,createdAt:new Date().toISOString()});
+    saveCompanies(cos);
+  }
+  localStorage.setItem('dp_session',JSON.stringify({id:compId,nom:nom,syncKey:syncKey}));
+  txt.textContent='☁ Recuperer mes donnees →';
+  btn.disabled=false;
+  document.getElementById('i-key').value='';
+  document.getElementById('i-pwd').value='';
+  okMsg.textContent='Donnees recuperees pour "'+nom+'" — redirection...';
+  okMsg.classList.add('show');
+  setTimeout(function(){window.location.href='devis-pro.html';},1200);
+}
+
+renderGrid();
+
+
+
+
+
+
+</script>
+</body>
+</html>
