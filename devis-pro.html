@@ -525,6 +525,25 @@ html.light .login-theme-btn{background:#f3f4f6;border-color:#e5e7eb;color:#37415
 .sync-badge.local{background:rgba(90,106,130,.12);color:var(--ink2);border:1px solid var(--border)}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spin{animation:spin .8s linear infinite;display:inline-block}
+
+/* ── MODULE CARDS (Dashboard) ── */
+.dash-module{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);
+  padding:1.4rem 1.25rem;cursor:pointer;position:relative;overflow:hidden;
+  transition:transform .2s,box-shadow .2s,border-color .2s;display:flex;flex-direction:column;gap:6px;
+}
+.dash-module::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--mod-color,var(--cyan));border-radius:var(--r2) var(--r2) 0 0;}
+.dash-module:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.25);border-color:var(--mod-color,var(--cyan));}
+.dash-mod-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:6px;flex-shrink:0}
+.dash-mod-title{font-size:14px;font-weight:700;color:var(--ink);line-height:1.3}
+.dash-mod-sub{font-size:11.5px;color:var(--ink3);line-height:1.4}
+.dash-mod-badge{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:20px;padding:0 7px;border-radius:10px;font-size:11px;font-weight:700;background:rgba(0,198,255,.15);color:var(--cyan);margin-top:4px;align-self:flex-start}
+.dash-mod-arrow{position:absolute;right:14px;bottom:14px;font-size:16px;color:var(--mod-color,var(--cyan));opacity:.5;transition:opacity .2s,transform .2s}
+.dash-module:hover .dash-mod-arrow{opacity:1;transform:translateX(4px)}
+html.light .dash-module{background:#fff;border-color:#e5e7eb}
+html.light .dash-module:hover{background:#fafbff;border-color:var(--mod-color,var(--cyan))}
+html.light .dash-mod-title{color:#111827}
+html.light .dash-mod-sub{color:#6b7280}
 /* Topbar sync indicator */
 .sync-indicator{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink3);padding:4px 10px;border-radius:20px;border:1px solid var(--border2);cursor:pointer;transition:.15s}
 .sync-indicator:hover{border-color:var(--cyan);color:var(--cyan)}
@@ -550,49 +569,63 @@ html.light .login-theme-btn{background:#f3f4f6;border-color:#e5e7eb;color:#37415
     <div class="logo-sub" id="sidebar-sub">Réseaux & Télécoms · Abidjan CI</div>
   </div>
   <div class="sidebar-nav">
+    <!-- ── PRINCIPAL ── -->
     <div class="nav-group">Principal</div>
     <div class="nav-item active" onclick="showPage('dashboard',this,'')">
       <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Tableau de bord</div>
+
+    <!-- ── DOCUMENTS ── -->
     <div class="nav-group">Documents</div>
+    <div class="nav-item" onclick="showPage('nouveau',this,'')">
+      <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 8v8m-4-4h8"/></svg>Nouveau document</div>
     <div class="nav-item" onclick="showPage('liste',this,'devis')">
-      <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Mes devis</div>
+      <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Devis</div>
     <div class="nav-item" onclick="showPage('liste',this,'proforma')">
       <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>Factures Proforma</div>
     <div class="nav-item" onclick="showPage('liste',this,'facture')">
       <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M9 14l2 2 4-4m5 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Factures</div>
-    <div class="nav-item" onclick="showPage('nouveau',this,'')">
-      <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 8v8m-4-4h8"/></svg>Nouveau document</div>
-    <div class="nav-group">Gestion</div>
+
+    <!-- ── COMMERCIAL ── -->
+    <div class="nav-group">Commercial</div>
+    <div class="nav-item" onclick="showPage('clients',this,'')">
+      <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg>Clients</div>
+    <div class="nav-item" onclick="showPage('catalogue',this,'')">
+      <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>Catalogue prestations</div>
+    <div class="nav-item" onclick="showPage('paiements',this,'')">
+      <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>Suivi paiements</div>
     <div class="nav-item" onclick="showPage('alertes',this,'')">
       <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
       Alertes
       <span id="alerte-badge" style="display:none;background:var(--red);color:#fff;border-radius:10px;font-size:10px;padding:1px 7px;margin-left:auto;font-weight:700">0</span>
     </div>
-    <div class="nav-item" onclick="showPage('paiements',this,'')">
-      <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>Suivi paiements</div>
-    <div class="nav-item" onclick="showPage('catalogue',this,'')">
-      <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>Catalogue</div>
-    <div class="nav-item" onclick="showPage('clients',this,'')">
-      <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg>Clients</div>
+
+    <!-- ── OPÉRATIONS ── -->
+    <div class="nav-group">Opérations</div>
     <div class="nav-item" onclick="showPage('magasin',this,'')">
       <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-      Magasin
+      Magasin / Stock
       <span id="stock-alert-badge" style="display:none;background:var(--red);color:#fff;border-radius:10px;font-size:10px;padding:1px 7px;margin-left:auto;font-weight:700">!</span>
     </div>
-    <div class="nav-group">Modules ERP</div>
-    <div class="nav-item" onclick="location.href='crm.html'">
-      <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg>CRM</div>
-    <div class="nav-item" onclick="location.href='compta.html'">
-      <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>Comptabilité</div>
-    <div class="nav-item" onclick="location.href='planning.html'">
-      <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Planning</div>
-    <div class="nav-item" onclick="location.href='rh.html'">
-      <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>Ressources humaines</div>
+    <div class="nav-item" onclick="showPage('planning',this,'')">
+      <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Planning chantiers</div>
     <div class="nav-item" onclick="showPage('galerie',this,'')">
-      <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Mes projets</div>
+      <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Projets réalisés</div>
+
+    <!-- ── MODULES ERP ── -->
+    <div class="nav-group">Modules ERP</div>
+    <div class="nav-item" onclick="showPage('crm',this,'')">
+      <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>CRM Prospects</div>
+    <div class="nav-item" onclick="showPage('compta',this,'')">
+      <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Comptabilité</div>
+    <div class="nav-item" onclick="showPage('rh',this,'')">
+      <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>Ressources humaines</div>
+    <div class="nav-item" onclick="showPage('rapports',this,'')">
+      <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Rapports & Stats</div>
+
+    <!-- ── CONFIGURATION ── -->
+    <div class="nav-group">Configuration</div>
     <div class="nav-item" onclick="showPage('parametres',this,'')">
       <svg class="nav-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>Paramètres</div>
-    
   </div>
   <div class="sidebar-footer">
     <div class="user-card" onclick="showPage('parametres',document.querySelectorAll('.nav-item')[9],'')" style="cursor:pointer" title="Cliquer pour modifier le profil">
@@ -643,51 +676,187 @@ html.light .login-theme-btn{background:#f3f4f6;border-color:#e5e7eb;color:#37415
 
     <!-- DASHBOARD -->
     <div id="page-dashboard" class="page active">
-      <div id="dash-alert" onclick="showPage('alertes',document.querySelectorAll('.nav-item')[8],'')" style="display:none;cursor:pointer;align-items:center;gap:12px">
-        <span></span>
+
+      <!-- Bannière alerte -->
+      <div id="dash-alert" onclick="showPage('alertes',null,'')" style="display:none;cursor:pointer;align-items:center;gap:12px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:var(--r);padding:10px 18px;margin-bottom:1.5rem;color:var(--warning);font-size:13px;font-weight:500">
+        <span>⚠</span><span id="dash-alert-text"></span>
         <span style="margin-left:auto;font-size:12px;text-decoration:underline;opacity:.8">Voir les alertes →</span>
       </div>
-      <div class="stats">
-        <div class="stat">
-          <div class="stat-icon blue">📋</div>
-          <div class="stat-label">Devis créés</div>
-          <div class="stat-value blue" id="stat-devis">0</div>
-        </div>
-        <div class="stat">
-          <div class="stat-icon amber">🧾</div>
-          <div class="stat-label">Proforma émises</div>
-          <div class="stat-value amber" id="stat-proforma">0</div>
-        </div>
-        <div class="stat">
-          <div class="stat-icon green">🧮</div>
-          <div class="stat-label">Factures émises</div>
-          <div class="stat-value green" id="stat-factures">0</div>
-        </div>
-        <div class="stat">
-          <div class="stat-icon blue">💰</div>
-          <div class="stat-label">CA Encaissé</div>
-          <div class="stat-value blue" id="stat-ca">0 FCFA</div>
-        </div>
+
+      <!-- En-tête de bienvenue -->
+      <div style="margin-bottom:2rem">
+        <div style="font-size:22px;font-weight:700;color:var(--ink);letter-spacing:-.3px">Bienvenue, <span id="dash-username" style="color:var(--cyan)">Regis</span> 👋</div>
+        <div style="font-size:13px;color:var(--ink3);margin-top:4px" id="dash-company-label">Sélectionnez un module pour commencer</div>
       </div>
-      <div class="chart-grid">
-        <div class="chart-card">
-          <div class="chart-title">Top 5 clients par montant</div>
-          <div class="bar-wrap" id="chart-clients"><div style="color:#b0bdb5;font-size:12px">Aucune donnée</div></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">Répartition par statut</div>
-          <div class="donut-wrap">
-            <svg class="donut-svg" id="donut-svg" width="90" height="90" viewBox="0 0 90 90"></svg>
-            <div class="donut-legend" id="donut-legend"><div style="color:#b0bdb5;font-size:12px">Aucune donnée</div></div>
+
+      <!-- Grille de modules -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px">
+
+        <!-- Nouveau document -->
+        <div class="dash-module" onclick="showPage('nouveau',null,'')" style="--mod-color:#00c6ff;--mod-bg:rgba(0,198,255,.1)">
+          <div class="dash-mod-icon" style="background:rgba(0,198,255,.15);color:#00c6ff">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 8v8m-4-4h8"/></svg>
           </div>
+          <div class="dash-mod-title">Nouveau document</div>
+          <div class="dash-mod-sub">Devis · Proforma · Facture</div>
+          <div class="dash-mod-arrow">→</div>
         </div>
-      </div>
-      <div class="card">
-        <div class="card-header"><div class="card-title">Documents récents</div></div>
-        <table>
-          <thead><tr><th>Numéro</th><th>Type</th><th>Client</th><th>Montant TTC</th><th>Statut</th><th>Date</th></tr></thead>
-          <tbody id="dash-table"><tr><td colspan="6" class="empty-state">Aucun document pour l'instant</td></tr></tbody>
-        </table>
+
+        <!-- Devis -->
+        <div class="dash-module" onclick="showPage('liste',null,'devis')" style="--mod-color:#6dd5fa;--mod-bg:rgba(109,213,250,.1)">
+          <div class="dash-mod-icon" style="background:rgba(109,213,250,.15);color:#6dd5fa">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          </div>
+          <div class="dash-mod-title">Devis</div>
+          <div class="dash-mod-sub">Propositions commerciales</div>
+          <div class="dash-mod-badge" id="dm-badge-devis">0</div>
+          <div class="dash-mod-arrow">→</div>
+        </div>
+
+        <!-- Proforma -->
+        <div class="dash-module" onclick="showPage('liste',null,'proforma')" style="--mod-color:#a78bfa;--mod-bg:rgba(167,139,250,.1)">
+          <div class="dash-mod-icon" style="background:rgba(167,139,250,.15);color:#a78bfa">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          </div>
+          <div class="dash-mod-title">Factures Proforma</div>
+          <div class="dash-mod-sub">Documents pré-facturation</div>
+          <div class="dash-mod-badge" id="dm-badge-proforma" style="background:rgba(167,139,250,.2);color:#a78bfa">0</div>
+          <div class="dash-mod-arrow">→</div>
+        </div>
+
+        <!-- Factures -->
+        <div class="dash-module" onclick="showPage('liste',null,'facture')" style="--mod-color:#f97316;--mod-bg:rgba(249,115,22,.1)">
+          <div class="dash-mod-icon" style="background:rgba(249,115,22,.15);color:#f97316">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 14l2 2 4-4m5 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div class="dash-mod-title">Factures</div>
+          <div class="dash-mod-sub">Facturation & encaissements</div>
+          <div class="dash-mod-badge" id="dm-badge-facture" style="background:rgba(249,115,22,.2);color:#f97316">0</div>
+          <div class="dash-mod-arrow">→</div>
+        </div>
+
+        <!-- Clients -->
+        <div class="dash-module" onclick="showPage('clients',null,'')" style="--mod-color:#10b981;--mod-bg:rgba(16,185,129,.1)">
+          <div class="dash-mod-icon" style="background:rgba(16,185,129,.15);color:#10b981">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg>
+          </div>
+          <div class="dash-mod-title">Clients</div>
+          <div class="dash-mod-sub">Gestion du portefeuille</div>
+          <div class="dash-mod-badge" id="dm-badge-clients" style="background:rgba(16,185,129,.2);color:#10b981">0</div>
+          <div class="dash-mod-arrow">→</div>
+        </div>
+
+        <!-- Catalogue -->
+        <div class="dash-module" onclick="showPage('catalogue',null,'')" style="--mod-color:#f59e0b;--mod-bg:rgba(245,158,11,.1)">
+          <div class="dash-mod-icon" style="background:rgba(245,158,11,.15);color:#f59e0b">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+          </div>
+          <div class="dash-mod-title">Catalogue</div>
+          <div class="dash-mod-sub">Prestations & articles</div>
+          <div class="dash-mod-arrow">→</div>
+        </div>
+
+        <!-- Suivi paiements -->
+        <div class="dash-module" onclick="showPage('paiements',null,'')" style="--mod-color:#34d399;--mod-bg:rgba(52,211,153,.1)">
+          <div class="dash-mod-icon" style="background:rgba(52,211,153,.15);color:#34d399">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          </div>
+          <div class="dash-mod-title">Suivi paiements</div>
+          <div class="dash-mod-sub">Encaissements & soldes</div>
+          <div class="dash-mod-arrow">→</div>
+        </div>
+
+        <!-- Alertes -->
+        <div class="dash-module" onclick="showPage('alertes',null,'')" style="--mod-color:#ef4444;--mod-bg:rgba(239,68,68,.1)">
+          <div class="dash-mod-icon" style="background:rgba(239,68,68,.15);color:#ef4444">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+          </div>
+          <div class="dash-mod-title">Alertes</div>
+          <div class="dash-mod-sub">Devis expirant bientôt</div>
+          <div class="dash-mod-badge" id="dm-badge-alertes" style="background:rgba(239,68,68,.2);color:#ef4444;display:none">0</div>
+          <div class="dash-mod-arrow">→</div>
+        </div>
+
+        <!-- Magasin -->
+        <div class="dash-module" onclick="showPage('magasin',null,'')" style="--mod-color:#60a5fa;--mod-bg:rgba(96,165,250,.1)">
+          <div class="dash-mod-icon" style="background:rgba(96,165,250,.15);color:#60a5fa">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          </div>
+          <div class="dash-mod-title">Magasin / Stock</div>
+          <div class="dash-mod-sub">Gestion des matériels</div>
+          <div class="dash-mod-arrow">→</div>
+        </div>
+
+        <!-- Planning -->
+        <div class="dash-module" onclick="showPage('planning',null,'')" style="--mod-color:#818cf8;--mod-bg:rgba(129,140,248,.1)">
+          <div class="dash-mod-icon" style="background:rgba(129,140,248,.15);color:#818cf8">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div class="dash-mod-title">Planning chantiers</div>
+          <div class="dash-mod-sub">Suivi des interventions</div>
+          <div class="dash-mod-arrow">→</div>
+        </div>
+
+        <!-- Projets -->
+        <div class="dash-module" onclick="showPage('galerie',null,'')" style="--mod-color:#fb923c;--mod-bg:rgba(251,146,60,.1)">
+          <div class="dash-mod-icon" style="background:rgba(251,146,60,.15);color:#fb923c">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          </div>
+          <div class="dash-mod-title">Projets réalisés</div>
+          <div class="dash-mod-sub">Galerie de références</div>
+          <div class="dash-mod-arrow">→</div>
+        </div>
+
+        <!-- CRM -->
+        <div class="dash-module" onclick="showPage('crm',null,'')" style="--mod-color:#2dd4bf;--mod-bg:rgba(45,212,191,.1)">
+          <div class="dash-mod-icon" style="background:rgba(45,212,191,.15);color:#2dd4bf">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          </div>
+          <div class="dash-mod-title">CRM Prospects</div>
+          <div class="dash-mod-sub">Pipeline commercial</div>
+          <div class="dash-mod-arrow">→</div>
+        </div>
+
+        <!-- Comptabilité -->
+        <div class="dash-module" onclick="showPage('compta',null,'')" style="--mod-color:#4ade80;--mod-bg:rgba(74,222,128,.1)">
+          <div class="dash-mod-icon" style="background:rgba(74,222,128,.15);color:#4ade80">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div class="dash-mod-title">Comptabilité</div>
+          <div class="dash-mod-sub">Journal recettes & dépenses</div>
+          <div class="dash-mod-arrow">→</div>
+        </div>
+
+        <!-- RH -->
+        <div class="dash-module" onclick="showPage('rh',null,'')" style="--mod-color:#f472b6;--mod-bg:rgba(244,114,182,.1)">
+          <div class="dash-mod-icon" style="background:rgba(244,114,182,.15);color:#f472b6">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+          </div>
+          <div class="dash-mod-title">Ressources humaines</div>
+          <div class="dash-mod-sub">Personnel & salaires</div>
+          <div class="dash-mod-arrow">→</div>
+        </div>
+
+        <!-- Rapports -->
+        <div class="dash-module" onclick="showPage('rapports',null,'')" style="--mod-color:#e879f9;--mod-bg:rgba(232,121,249,.1)">
+          <div class="dash-mod-icon" style="background:rgba(232,121,249,.15);color:#e879f9">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/><path d="M3 3l18 18" stroke-dasharray="none"/></svg>
+          </div>
+          <div class="dash-mod-title">Rapports & Statistiques</div>
+          <div class="dash-mod-sub">Analyses & indicateurs</div>
+          <div class="dash-mod-arrow">→</div>
+        </div>
+
+        <!-- Paramètres -->
+        <div class="dash-module" onclick="showPage('parametres',null,'')" style="--mod-color:#94a3b8;--mod-bg:rgba(148,163,184,.1)">
+          <div class="dash-mod-icon" style="background:rgba(148,163,184,.15);color:#94a3b8">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <div class="dash-mod-title">Paramètres</div>
+          <div class="dash-mod-sub">Configuration de l'app</div>
+          <div class="dash-mod-arrow">→</div>
+        </div>
+
       </div>
     </div>
 
@@ -1234,6 +1403,85 @@ html.light .login-theme-btn{background:#f3f4f6;border-color:#e5e7eb;color:#37415
         <button class="btn btn-primary" onclick="saveParams()">💾 Enregistrer</button>
       </div>
     </div>
+
+
+
+<!-- ══════════════ PAGE CRM ══════════════ -->
+<div id="page-crm" class="page">
+  <div class="stats">
+    <div class="stat"><div class="stat-icon blue">🎯</div><div class="stat-label">Prospects</div><div class="stat-value blue" id="crm-stat-prospects">0</div></div>
+    <div class="stat"><div class="stat-icon amber">🔄</div><div class="stat-label">En cours</div><div class="stat-value amber" id="crm-stat-encours">0</div></div>
+    <div class="stat"><div class="stat-icon green">✅</div><div class="stat-label">Gagnés</div><div class="stat-value green" id="crm-stat-gagnes">0</div></div>
+    <div class="stat"><div class="stat-icon red">❌</div><div class="stat-label">Perdus</div><div class="stat-value red" id="crm-stat-perdus">0</div></div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Pipeline CRM</div>
+      <button class="btn btn-primary btn-sm" onclick="openCrmModal()">+ Nouveau prospect</button>
+    </div>
+    <div id="crm-kanban" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;min-height:200px"></div>
+  </div>
+</div>
+
+<!-- ══════════════ PAGE COMPTA ══════════════ -->
+<div id="page-compta" class="page">
+  <div class="stats">
+    <div class="stat"><div class="stat-icon green">📈</div><div class="stat-label">Recettes</div><div class="stat-value green" id="compta-stat-recettes">0 FCFA</div></div>
+    <div class="stat"><div class="stat-icon red">📉</div><div class="stat-label">Dépenses</div><div class="stat-value red" id="compta-stat-depenses">0 FCFA</div></div>
+    <div class="stat"><div class="stat-icon blue">💰</div><div class="stat-label">Solde</div><div class="stat-value blue" id="compta-stat-solde">0 FCFA</div></div>
+    <div class="stat"><div class="stat-icon amber">📋</div><div class="stat-label">Écritures</div><div class="stat-value amber" id="compta-stat-ecritures">0</div></div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Journal comptable</div>
+      <button class="btn btn-primary btn-sm" onclick="openComptaModal()">+ Nouvelle écriture</button>
+    </div>
+    <table>
+      <thead><tr><th>Date</th><th>Libellé</th><th>Catégorie</th><th>Recette</th><th>Dépense</th><th>Actions</th></tr></thead>
+      <tbody id="compta-table"><tr><td colspan="6" class="empty-state">Aucune écriture enregistrée</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════ PAGE PLANNING ══════════════ -->
+<div id="page-planning" class="page">
+  <div class="stats">
+    <div class="stat"><div class="stat-icon blue">🏗️</div><div class="stat-label">Chantiers actifs</div><div class="stat-value blue" id="plan-stat-actifs">0</div></div>
+    <div class="stat"><div class="stat-icon amber">⏳</div><div class="stat-label">En attente</div><div class="stat-value amber" id="plan-stat-attente">0</div></div>
+    <div class="stat"><div class="stat-icon green">✅</div><div class="stat-label">Terminés</div><div class="stat-value green" id="plan-stat-termines">0</div></div>
+    <div class="stat"><div class="stat-icon red">⚠️</div><div class="stat-label">En retard</div><div class="stat-value red" id="plan-stat-retard">0</div></div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Planning des chantiers</div>
+      <button class="btn btn-primary btn-sm" onclick="openPlanModal()">+ Nouveau chantier</button>
+    </div>
+    <table>
+      <thead><tr><th>Chantier</th><th>Client</th><th>Début</th><th>Fin prévue</th><th>Statut</th><th>Responsable</th><th>Actions</th></tr></thead>
+      <tbody id="planning-table"><tr><td colspan="7" class="empty-state">Aucun chantier planifié</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════ PAGE RH ══════════════ -->
+<div id="page-rh" class="page">
+  <div class="stats">
+    <div class="stat"><div class="stat-icon blue">👥</div><div class="stat-label">Effectif total</div><div class="stat-value blue" id="rh-stat-total">0</div></div>
+    <div class="stat"><div class="stat-icon green">✅</div><div class="stat-label">Actifs</div><div class="stat-value green" id="rh-stat-actifs">0</div></div>
+    <div class="stat"><div class="stat-icon amber">🏖️</div><div class="stat-label">En congé</div><div class="stat-value amber" id="rh-stat-conge">0</div></div>
+    <div class="stat"><div class="stat-icon red">💸</div><div class="stat-label">Masse salariale</div><div class="stat-value red" id="rh-stat-salaires">0 FCFA</div></div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Registre du personnel</div>
+      <button class="btn btn-primary btn-sm" onclick="openRhModal()">+ Nouveau employé</button>
+    </div>
+    <table>
+      <thead><tr><th>Nom & Prénom</th><th>Poste</th><th>Département</th><th>Date embauche</th><th>Salaire (FCFA)</th><th>Statut</th><th>Actions</th></tr></thead>
+      <tbody id="rh-table"><tr><td colspan="7" class="empty-state">Aucun employé enregistré</td></tr></tbody>
+    </table>
+  </div>
+</div>
 
   </div>
 </div>
@@ -1918,7 +2166,7 @@ function showPage(id,el,sub){
   document.querySelectorAll('.nav-item').forEach(n=>{n.classList.remove('active');n.classList.remove('active-blue');});
   document.getElementById('page-'+id).classList.add('active');
   if(el){sub==='proforma'?el.classList.add('active-blue'):el.classList.add('active');}
-  const titles={dashboard:'Tableau de bord',liste:sub==='proforma'?'Factures Proforma':sub==='facture'?'Factures':'Mes devis',nouveau:'Nouveau document',alertes:'Alertes d\'expiration',paiements:'Suivi des paiements',galerie:'Mes projets réalisés',catalogue:'Catalogue de prestations',clients:'Clients',parametres:'Paramètres',magasin:'📦 Magasin — Stock matériels'};
+  const titles={dashboard:'Accueil — Modules',liste:sub==='proforma'?'Factures Proforma':sub==='facture'?'Factures':'Mes devis',nouveau:'Nouveau document',alertes:'Alertes d\'expiration',paiements:'Suivi des paiements',galerie:'Mes projets réalisés',catalogue:'Catalogue de prestations',clients:'Clients',parametres:'Paramètres',magasin:'📦 Magasin — Stock matériels',crm:'👥 CRM — Pipeline prospects',compta:'📊 Comptabilité',planning:'🗓 Planning des chantiers',rh:'💼 Ressources humaines',rapports:'📈 Rapports & Statistiques'};
   document.getElementById('page-title').textContent=titles[id]||'';
   if(id==='dashboard')renderDash();
   if(id==='liste'){currentListeType=sub||'devis';document.getElementById('liste-title').textContent=titles.liste;renderListe();}
@@ -1930,6 +2178,11 @@ function showPage(id,el,sub){
   if(id==='clients')renderClients();
   if(id==='magasin')renderMagasin();
   if(id==='parametres')loadParams();
+  if(id==='crm')renderCrm();
+  if(id==='compta')renderCompta();
+  if(id==='planning')renderPlanning();
+  if(id==='rh')renderRh();
+  if(id==='rapports')renderRapports();
 }
 
 function selectType(t){
@@ -2260,67 +2513,41 @@ function resetForm(){
 /* ── DASHBOARD ── */
 function renderDash(){
   const devisArr=docs.filter(d=>d.type==='devis');
-  const proArr=docs.filter(d=>d.type==='proforma');
-  const facArr=docs.filter(d=>d.type==='facture');
-  const ca=facArr.filter(d=>d.statut==='payé').reduce((s,d)=>s+d.ttc,0);
-  document.getElementById('stat-devis').textContent=devisArr.length;
-  document.getElementById('stat-proforma').textContent=proArr.length;
-  document.getElementById('stat-factures').textContent=facArr.length;
-  document.getElementById('stat-ca').textContent=Math.round(ca).toLocaleString('fr-FR')+' FCFA';
+  const proArr  =docs.filter(d=>d.type==='proforma');
+  const facArr  =docs.filter(d=>d.type==='facture');
 
-  // Alerte badge sidebar refresh
+  // Badges sur les cartes modules
+  const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
+  set('dm-badge-devis',   devisArr.length);
+  set('dm-badge-proforma',proArr.length);
+  set('dm-badge-facture', facArr.length);
+  set('dm-badge-clients', clients.length);
+
+  // Badge alertes
   const today=new Date(); today.setHours(0,0,0,0);
   const in7=new Date(today); in7.setDate(in7.getDate()+7);
   const alertCount=docs.filter(d=>d.type==='devis'&&d.statut==='en attente'&&new Date(d.validite)<=in7).length;
-  const badge=document.getElementById('alerte-badge');
-  if(alertCount>0){badge.style.display='inline';badge.textContent=alertCount;}
-  else badge.style.display='none';
+  const sidebarBadge=document.getElementById('alerte-badge');
+  if(alertCount>0){sidebarBadge.style.display='inline';sidebarBadge.textContent=alertCount;}
+  else sidebarBadge.style.display='none';
+  const alertBadge=document.getElementById('dm-badge-alertes');
+  if(alertBadge){alertBadge.style.display=alertCount>0?'inline-flex':'none';alertBadge.textContent=alertCount;}
 
-  // Bandeau alerte dashboard
+  // Bannière alerte
   const alertBanner=document.getElementById('dash-alert');
   if(alertCount>0){
     alertBanner.style.display='flex';
-    alertBanner.querySelector('span').textContent=`⚠️  ${alertCount} devis expire${alertCount>1?'nt':''} bientôt — cliquez pour voir les alertes`;
-  } else alertBanner.style.display='none';
+    const txt=document.getElementById('dash-alert-text');
+    if(txt)txt.textContent=`${alertCount} devis expire${alertCount>1?'nt':''} bientôt`;
+  } else if(alertBanner) alertBanner.style.display='none';
 
-  // Bar chart top clients
-  const clientMap={};
-  docs.forEach(d=>{if(d.clientNom&&d.clientNom!=='—'){clientMap[d.clientNom]=(clientMap[d.clientNom]||0)+d.ttc;}});
-  const top5=Object.entries(clientMap).sort((a,b)=>b[1]-a[1]).slice(0,5);
-  const maxVal=top5.length?top5[0][1]:1;
-  const barWrap=document.getElementById('chart-clients');
-  if(!top5.length){barWrap.innerHTML='<div style="color:#b0bdb5;font-size:12px;padding:8px 0">Aucune donnée</div>';}
-  else{barWrap.innerHTML=top5.map(([name,val])=>`
-    <div class="bar-row">
-      <div class="bar-label" title="${name}">${name}</div>
-      <div class="bar-bg"><div class="bar-fill" style="width:${Math.round(val/maxVal*100)}%"></div></div>
-      <div class="bar-val">${Math.round(val/1000)}K</div>
-    </div>`).join('');}
+  // Nom entreprise dans le sous-titre
+  const sub=document.getElementById('dash-company-label');
+  if(sub&&params&&params.nom)sub.textContent=params.nom+(params.secteur?' · '+params.secteur:'');
 
-  // Donut chart statuts
-  const statusMap={'en attente':0,'accepté':0,'refusé':0,'payé':0};
-  docs.forEach(d=>{if(statusMap[d.statut]!==undefined)statusMap[d.statut]++;});
-  const colors={'en attente':'#f4c542','accepté':'#52b788','refusé':'#e05c5c','payé':'#2d6a4f'};
-  const total=docs.length||1;
-  let offset=0;
-  const r=32,cx=45,cy=45,circumf=2*Math.PI*r;
-  const slices=Object.entries(statusMap).filter(([,v])=>v>0);
-  const svg=document.getElementById('donut-svg');
-  svg.innerHTML=slices.map(([k,v])=>{
-    const pct=v/total;const dash=circumf*pct;const gap=circumf*(1-pct);
-    const rot=-90+offset*360/total;
-    const s=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${colors[k]}" stroke-width="14" stroke-dasharray="${dash} ${circumf-dash}" stroke-dashoffset="${-circumf*offset/total}" transform="rotate(-90 ${cx} ${cy})"/>`;
-    offset+=v;return s;
-  }).join('')+`<circle cx="${cx}" cy="${cy}" r="20" fill="white"/>`;
-  const legend=document.getElementById('donut-legend');
-  legend.innerHTML=slices.map(([k,v])=>`<div class="donut-leg-item"><div class="donut-dot" style="background:${colors[k]}"></div><span>${k} (${v})</span></div>`).join('');
-
-  // Recent docs
-  const tb=document.getElementById('dash-table');
-  if(!docs.length){tb.innerHTML='<tr><td colspan="6" class="empty-state">Aucun document</td></tr>';}
-  else{tb.innerHTML=docs.slice(0,6).map(d=>`<tr>
-    <td style="font-weight:500">${d.num}</td><td>${typeBadge(d.type)}</td><td>${d.clientNom}</td>
-    <td>${d.ttc.toLocaleString('fr-FR')} FCFA</td><td>${statusBadge(d.statut)}</td><td>${d.date}</td></tr>`).join('');}
+  // Nom utilisateur
+  const uname=document.getElementById('dash-username');
+  if(uname)uname.textContent='Regis';
 }
 
 /* ── LISTE ── */
@@ -3665,6 +3892,321 @@ document.querySelectorAll('.nav-item').forEach(el=>{
   el.addEventListener('click',()=>{if(window.innerWidth<=768)closeSidebar();});
 });
 
+/* ══════════════════════════════════════════════════
+   MODULES ERP — CRM / COMPTA / PLANNING / RH
+   Données stockées dans localStorage par entreprise
+══════════════════════════════════════════════════ */
+
+function erpKey(mod){return companyStorageKey(currentCompanyId,'erp_'+mod);}
+function erpLoad(mod){return JSON.parse(localStorage.getItem(erpKey(mod))||'[]');}
+function erpSave(mod,data){localStorage.setItem(erpKey(mod),JSON.stringify(data));}
+
+/* ════ CRM ════ */
+let crmProspects=[];
+let crmEditIdx=-1;
+
+function renderCrm(){
+  crmProspects=erpLoad('crm');
+  const etapes=['prospect','contact','devis','gagne','perdu'];
+  const etapeLabels={prospect:'🎯 Prospect',contact:'📞 Contacté',devis:'📄 Devis envoyé',gagne:'✅ Gagné',perdu:'❌ Perdu'};
+  const etapeColors={prospect:'var(--cyan)',contact:'var(--warning)',devis:'#a78bfa',gagne:'var(--success)',perdu:'var(--red)'};
+  document.getElementById('crm-stat-prospects').textContent=crmProspects.filter(p=>p.etape==='prospect').length;
+  document.getElementById('crm-stat-encours').textContent=crmProspects.filter(p=>['contact','devis'].includes(p.etape)).length;
+  document.getElementById('crm-stat-gagnes').textContent=crmProspects.filter(p=>p.etape==='gagne').length;
+  document.getElementById('crm-stat-perdus').textContent=crmProspects.filter(p=>p.etape==='perdu').length;
+  const kanban=document.getElementById('crm-kanban');
+  kanban.innerHTML=etapes.map(e=>{
+    const items=crmProspects.filter(p=>p.etape===e);
+    return`<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:12px">
+      <div style="font-size:12px;font-weight:700;color:${etapeColors[e]};margin-bottom:10px;border-bottom:2px solid ${etapeColors[e]};padding-bottom:6px">${etapeLabels[e]} <span style="background:var(--surface2);border-radius:10px;padding:1px 8px;font-size:11px;color:var(--ink3)">${items.length}</span></div>
+      ${items.length?items.map(p=>{const ri=crmProspects.indexOf(p);return`<div style="background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);padding:10px;margin-bottom:8px">
+        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:3px">${p.nom}</div>
+        ${p.contact?`<div style="font-size:11px;color:var(--ink3)">${p.contact}</div>`:''}
+        ${p.montant?`<div style="font-size:12px;color:var(--cyan);margin-top:4px;font-weight:600">${parseInt(p.montant).toLocaleString('fr-FR')} FCFA</div>`:''}
+        <div style="display:flex;gap:4px;margin-top:6px">
+          <button class="btn btn-xs btn-primary" onclick="openCrmModal(${ri})">✏</button>
+          <button class="btn btn-xs btn-danger" onclick="deleteCrmProspect(${ri})">×</button>
+        </div>
+      </div>`;}).join(''):'<div style="font-size:12px;color:var(--ink3);text-align:center;padding:16px 0">Vide</div>'}
+    </div>`;
+  }).join('');
+}
+
+function openCrmModal(idx){
+  crmEditIdx=idx!==undefined?idx:-1;
+  document.getElementById('crm-modal-title').textContent=idx!==undefined?'✏️ Modifier prospect':'🎯 Nouveau prospect';
+  const p=idx!==undefined?crmProspects[idx]:{};
+  document.getElementById('crm-nom').value=p.nom||'';
+  document.getElementById('crm-contact').value=p.contact||'';
+  document.getElementById('crm-tel').value=p.tel||'';
+  document.getElementById('crm-email').value=p.email||'';
+  document.getElementById('crm-besoin').value=p.besoin||'';
+  document.getElementById('crm-montant').value=p.montant||0;
+  document.getElementById('crm-etape').value=p.etape||'prospect';
+  document.getElementById('crm-modal').classList.add('open');
+}
+
+function saveCrmProspect(){
+  const nom=document.getElementById('crm-nom').value.trim();
+  if(!nom){toast('⚠ Nom obligatoire');return;}
+  const p={nom,contact:document.getElementById('crm-contact').value,tel:document.getElementById('crm-tel').value,
+    email:document.getElementById('crm-email').value,etape:document.getElementById('crm-etape').value,
+    montant:document.getElementById('crm-montant').value,besoin:document.getElementById('crm-besoin').value};
+  if(crmEditIdx>=0)crmProspects[crmEditIdx]=p;else crmProspects.unshift(p);
+  erpSave('crm',crmProspects);closeModal('crm-modal');renderCrm();
+  toast('✅ Prospect enregistré');
+}
+
+function deleteCrmProspect(idx){
+  if(!confirm('Supprimer ce prospect ?'))return;
+  crmProspects.splice(idx,1);erpSave('crm',crmProspects);renderCrm();toast('Prospect supprimé');
+}
+
+/* ════ COMPTABILITÉ ════ */
+let comptaEcritures=[];
+
+function renderCompta(){
+  comptaEcritures=erpLoad('compta');
+  const recettes=comptaEcritures.filter(e=>e.type==='recette').reduce((s,e)=>s+parseFloat(e.montant||0),0);
+  const depenses=comptaEcritures.filter(e=>e.type==='depense').reduce((s,e)=>s+parseFloat(e.montant||0),0);
+  document.getElementById('compta-stat-recettes').textContent=Math.round(recettes).toLocaleString('fr-FR')+' FCFA';
+  document.getElementById('compta-stat-depenses').textContent=Math.round(depenses).toLocaleString('fr-FR')+' FCFA';
+  document.getElementById('compta-stat-solde').textContent=Math.round(recettes-depenses).toLocaleString('fr-FR')+' FCFA';
+  document.getElementById('compta-stat-ecritures').textContent=comptaEcritures.length;
+  const tb=document.getElementById('compta-table');
+  if(!comptaEcritures.length){tb.innerHTML='<tr><td colspan="6" class="empty-state">Aucune écriture enregistrée</td></tr>';return;}
+  tb.innerHTML=[...comptaEcritures].sort((a,b)=>b.date.localeCompare(a.date)).map((e,ri)=>{
+    const isRec=e.type==='recette';
+    return`<tr>
+      <td>${e.date}</td><td style="font-weight:500">${e.libelle}</td><td><span class="badge badge-proforma">${e.categorie}</span></td>
+      <td style="color:var(--success);font-weight:600">${isRec?Math.round(e.montant).toLocaleString('fr-FR')+' FCFA':'—'}</td>
+      <td style="color:var(--red);font-weight:600">${!isRec?Math.round(e.montant).toLocaleString('fr-FR')+' FCFA':'—'}</td>
+      <td><button class="delete-btn" onclick="deleteComptaEcriture(${ri})">×</button></td>
+    </tr>`;}).join('');
+}
+
+function openComptaModal(){
+  document.getElementById('compta-date').value=new Date().toISOString().split('T')[0];
+  document.getElementById('compta-libelle').value='';
+  document.getElementById('compta-montant').value=0;
+  document.getElementById('compta-type').value='recette';
+  document.getElementById('compta-modal').classList.add('open');
+}
+
+function saveComptaEcriture(){
+  const libelle=document.getElementById('compta-libelle').value.trim();
+  if(!libelle){toast('⚠ Libellé obligatoire');return;}
+  const montant=parseFloat(document.getElementById('compta-montant').value)||0;
+  if(montant<=0){toast('⚠ Montant invalide');return;}
+  const e={date:document.getElementById('compta-date').value,libelle,type:document.getElementById('compta-type').value,
+    categorie:document.getElementById('compta-categorie').value,montant};
+  comptaEcritures.unshift(e);erpSave('compta',comptaEcritures);
+  closeModal('compta-modal');renderCompta();toast('✅ Écriture enregistrée');
+}
+
+function deleteComptaEcriture(idx){
+  if(!confirm('Supprimer cette écriture ?'))return;
+  comptaEcritures.splice(idx,1);erpSave('compta',comptaEcritures);renderCompta();toast('Écriture supprimée');
+}
+
+/* ════ PLANNING ════ */
+let planChantiers=[];
+let planEditIdx=-1;
+
+function renderPlanning(){
+  planChantiers=erpLoad('planning');
+  const today=new Date().toISOString().split('T')[0];
+  document.getElementById('plan-stat-actifs').textContent=planChantiers.filter(c=>c.statut==='en_cours').length;
+  document.getElementById('plan-stat-attente').textContent=planChantiers.filter(c=>c.statut==='attente').length;
+  document.getElementById('plan-stat-termines').textContent=planChantiers.filter(c=>c.statut==='termine').length;
+  document.getElementById('plan-stat-retard').textContent=planChantiers.filter(c=>c.statut!=='termine'&&c.statut!=='annule'&&c.fin&&c.fin<today).length;
+  const tb=document.getElementById('planning-table');
+  if(!planChantiers.length){tb.innerHTML='<tr><td colspan="7" class="empty-state">Aucun chantier planifié</td></tr>';return;}
+  const sb={en_cours:'<span class="badge badge-warning">En cours</span>',attente:'<span class="badge badge-proforma">En attente</span>',termine:'<span class="badge badge-success">Terminé</span>',annule:'<span class="badge badge-danger">Annulé</span>'};
+  tb.innerHTML=planChantiers.map((c,ri)=>`<tr>
+    <td style="font-weight:600">${c.titre}</td><td>${c.client||'—'}</td>
+    <td>${c.debut||'—'}</td><td style="color:${c.fin&&c.fin<today&&c.statut!=='termine'?'var(--red)':'inherit'}">${c.fin||'—'}</td>
+    <td>${sb[c.statut]||c.statut}</td><td>${c.responsable||'—'}</td>
+    <td><div class="action-row">
+      <button class="btn btn-sm" onclick="openPlanModal(${ri})">✏️</button>
+      <button class="delete-btn" onclick="deletePlanChantier(${ri})">×</button>
+    </div></td>
+  </tr>`).join('');
+}
+
+function openPlanModal(idx){
+  planEditIdx=idx!==undefined?idx:-1;
+  document.getElementById('plan-modal-title').textContent=idx!==undefined?'✏️ Modifier le chantier':'🏗️ Nouveau chantier';
+  const c=idx!==undefined?planChantiers[idx]:{};
+  document.getElementById('plan-titre').value=c.titre||'';
+  document.getElementById('plan-client').value=c.client||'';
+  document.getElementById('plan-responsable').value=c.responsable||'';
+  document.getElementById('plan-debut').value=c.debut||'';
+  document.getElementById('plan-fin').value=c.fin||'';
+  document.getElementById('plan-notes').value=c.notes||'';
+  document.getElementById('plan-statut').value=c.statut||'attente';
+  document.getElementById('plan-modal').classList.add('open');
+}
+
+function savePlanChantier(){
+  const titre=document.getElementById('plan-titre').value.trim();
+  if(!titre){toast('⚠ Intitulé obligatoire');return;}
+  const c={titre,client:document.getElementById('plan-client').value,responsable:document.getElementById('plan-responsable').value,
+    debut:document.getElementById('plan-debut').value,fin:document.getElementById('plan-fin').value,
+    statut:document.getElementById('plan-statut').value,notes:document.getElementById('plan-notes').value};
+  if(planEditIdx>=0)planChantiers[planEditIdx]=c;else planChantiers.unshift(c);
+  erpSave('planning',planChantiers);closeModal('plan-modal');renderPlanning();
+  toast('✅ Chantier enregistré');
+}
+
+function deletePlanChantier(idx){
+  if(!confirm('Supprimer ce chantier ?'))return;
+  planChantiers.splice(idx,1);erpSave('planning',planChantiers);renderPlanning();toast('Chantier supprimé');
+}
+
+/* ════ RH ════ */
+let rhEmployes=[];
+let rhEditIdx=-1;
+
+function renderRh(){
+  rhEmployes=erpLoad('rh');
+  const actifs=rhEmployes.filter(e=>e.statut==='actif');
+  const conge=rhEmployes.filter(e=>e.statut==='conge');
+  const masse=rhEmployes.reduce((s,e)=>s+parseFloat(e.salaire||0),0);
+  document.getElementById('rh-stat-total').textContent=rhEmployes.length;
+  document.getElementById('rh-stat-actifs').textContent=actifs.length;
+  document.getElementById('rh-stat-conge').textContent=conge.length;
+  document.getElementById('rh-stat-salaires').textContent=Math.round(masse).toLocaleString('fr-FR')+' FCFA';
+  const tb=document.getElementById('rh-table');
+  if(!rhEmployes.length){tb.innerHTML='<tr><td colspan="7" class="empty-state">Aucun employé enregistré</td></tr>';return;}
+  const sb={actif:'<span class="badge badge-success">Actif</span>',conge:'<span class="badge badge-warning">En congé</span>',inactif:'<span class="badge badge-danger">Inactif</span>'};
+  tb.innerHTML=rhEmployes.map((e,ri)=>`<tr>
+    <td style="font-weight:600">${e.prenom} ${e.nom}</td><td>${e.poste||'—'}</td>
+    <td>${e.dept||'—'}</td><td>${e.embauche||'—'}</td>
+    <td style="font-weight:600;color:var(--cyan)">${parseFloat(e.salaire||0).toLocaleString('fr-FR')}</td>
+    <td>${sb[e.statut]||e.statut}</td>
+    <td><div class="action-row">
+      <button class="btn btn-sm" onclick="openRhModal(${ri})">✏️</button>
+      <button class="delete-btn" onclick="deleteRhEmploye(${ri})">×</button>
+    </div></td>
+  </tr>`).join('');
+}
+
+function openRhModal(idx){
+  rhEditIdx=idx!==undefined?idx:-1;
+  document.getElementById('rh-modal-title').textContent=idx!==undefined?'✏️ Modifier employé':'👤 Nouvel employé';
+  const e=idx!==undefined?rhEmployes[idx]:{};
+  document.getElementById('rh-prenom').value=e.prenom||'';
+  document.getElementById('rh-nom').value=e.nom||'';
+  document.getElementById('rh-poste').value=e.poste||'';
+  document.getElementById('rh-tel').value=e.tel||'';
+  document.getElementById('rh-embauche').value=e.embauche||'';
+  document.getElementById('rh-salaire').value=e.salaire||0;
+  document.getElementById('rh-dept').value=e.dept||'Technique';
+  document.getElementById('rh-statut').value=e.statut||'actif';
+  document.getElementById('rh-modal').classList.add('open');
+}
+
+function saveRhEmploye(){
+  const prenom=document.getElementById('rh-prenom').value.trim();
+  const nom=document.getElementById('rh-nom').value.trim();
+  if(!prenom||!nom){toast('⚠ Prénom et nom obligatoires');return;}
+  const e={prenom,nom,poste:document.getElementById('rh-poste').value,dept:document.getElementById('rh-dept').value,
+    embauche:document.getElementById('rh-embauche').value,salaire:document.getElementById('rh-salaire').value,
+    tel:document.getElementById('rh-tel').value,statut:document.getElementById('rh-statut').value};
+  if(rhEditIdx>=0)rhEmployes[rhEditIdx]=e;else rhEmployes.unshift(e);
+  erpSave('rh',rhEmployes);closeModal('rh-modal');renderRh();
+  toast('✅ Employé '+prenom+' '+nom+' enregistré');
+}
+
+function deleteRhEmploye(idx){
+  if(!confirm('Supprimer cet employé ?'))return;
+  rhEmployes.splice(idx,1);erpSave('rh',rhEmployes);renderRh();toast('Employé supprimé');
+}
+
+/* ════ RAPPORTS & STATISTIQUES ════ */
+function renderRapports(){
+  // ── KPIs globaux ──
+  const facArr=docs.filter(d=>d.type==='facture');
+  const caTotal=facArr.reduce((s,d)=>s+d.ttc,0);
+  const caEncaisse=facArr.reduce((s,d)=>s+(d.paiements||[]).reduce((a,p)=>a+p.montant,0),0);
+  const reste=caTotal-caEncaisse;
+  document.getElementById('rpt-total-docs').textContent=docs.length;
+  document.getElementById('rpt-ca-facture').textContent=Math.round(caTotal).toLocaleString('fr-FR')+' FCFA';
+  document.getElementById('rpt-ca-encaisse').textContent=Math.round(caEncaisse).toLocaleString('fr-FR')+' FCFA';
+  document.getElementById('rpt-reste').textContent=Math.round(reste).toLocaleString('fr-FR')+' FCFA';
+
+  // ── Helper barre ──
+  function barHTML(label,val,max,color,sub){
+    const pct=max>0?Math.round(val/max*100):0;
+    return`<div style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+        <span style="font-size:12px;font-weight:500;color:var(--ink)">${label}</span>
+        <span style="font-size:11px;color:var(--ink3)">${sub||val}</span>
+      </div>
+      <div style="height:8px;background:var(--surface3);border-radius:4px;overflow:hidden">
+        <div style="height:100%;width:${pct}%;background:${color};border-radius:4px;transition:width .4s"></div>
+      </div>
+    </div>`;
+  }
+
+  // ── Répartition par type ──
+  const types={devis:0,proforma:0,facture:0};
+  docs.forEach(d=>{if(types[d.type]!==undefined)types[d.type]++;});
+  const maxType=Math.max(...Object.values(types),1);
+  document.getElementById('rpt-type-bars').innerHTML=
+    barHTML('Devis',types.devis,maxType,'#6dd5fa',types.devis+' doc'+(types.devis>1?'s':''))+
+    barHTML('Factures Proforma',types.proforma,maxType,'#a78bfa',types.proforma+' doc'+(types.proforma>1?'s':''))+
+    barHTML('Factures',types.facture,maxType,'#f97316',types.facture+' doc'+(types.facture>1?'s':''))||'<div style="color:var(--ink3);font-size:12px">Aucune donnée</div>';
+
+  // ── Répartition par statut ──
+  const statuts={'en attente':0,'accepté':0,'refusé':0,'payé':0};
+  docs.forEach(d=>{if(statuts[d.statut]!==undefined)statuts[d.statut]++;});
+  const colors={'en attente':'#f59e0b','accepté':'#10b981','refusé':'#ef4444','payé':'#00c6ff'};
+  const maxStat=Math.max(...Object.values(statuts),1);
+  document.getElementById('rpt-statut-bars').innerHTML=
+    Object.entries(statuts).map(([k,v])=>barHTML(k.charAt(0).toUpperCase()+k.slice(1),v,maxStat,colors[k],v+' doc'+(v>1?'s':''))).join('')||'<div style="color:var(--ink3);font-size:12px">Aucune donnée</div>';
+
+  // ── Top 5 clients ──
+  const clientMap={};
+  docs.forEach(d=>{if(d.clientNom&&d.clientNom!=='—')clientMap[d.clientNom]=(clientMap[d.clientNom]||0)+d.ttc;});
+  const top5=Object.entries(clientMap).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const maxC=top5.length?top5[0][1]:1;
+  document.getElementById('rpt-top-clients').innerHTML=top5.length
+    ?top5.map(([name,val])=>barHTML(name,val,maxC,'var(--cyan)',Math.round(val).toLocaleString('fr-FR')+' FCFA')).join('')
+    :'<div style="color:var(--ink3);font-size:12px">Aucune donnée</div>';
+
+  // ── Activité 6 derniers mois ──
+  const months=[];
+  for(let i=5;i>=0;i--){
+    const d=new Date(); d.setMonth(d.getMonth()-i);
+    months.push({key:d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),label:['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'][d.getMonth()]});
+  }
+  const monthDocs={};
+  months.forEach(m=>{monthDocs[m.key]=docs.filter(d=>d.date&&d.date.startsWith(m.key)).length;});
+  const maxM=Math.max(...Object.values(monthDocs),1);
+  document.getElementById('rpt-mensuel').innerHTML=
+    months.map(m=>barHTML(m.label,monthDocs[m.key],maxM,'#818cf8',monthDocs[m.key]+' doc'+(monthDocs[m.key]>1?'s':''))).join('');
+
+  // ── Récap ERP ──
+  const crmData=erpLoad('crm');
+  const comptaData=erpLoad('compta');
+  const planData=erpLoad('planning');
+  const rhData=erpLoad('rh');
+  const recettes=comptaData.filter(e=>e.type==='recette').reduce((s,e)=>s+parseFloat(e.montant||0),0);
+  const depenses=comptaData.filter(e=>e.type==='depense').reduce((s,e)=>s+parseFloat(e.montant||0),0);
+  document.getElementById('rpt-erp-recap').innerHTML=[
+    {icon:'🎯',titre:'CRM',val:crmData.filter(p=>p.etape==='gagne').length+' gagnés / '+crmData.length+' prospects',color:'#2dd4bf'},
+    {icon:'💰',titre:'Comptabilité',val:'Solde : '+Math.round(recettes-depenses).toLocaleString('fr-FR')+' FCFA',color:'#4ade80'},
+    {icon:'🏗️',titre:'Planning',val:planData.filter(c=>c.statut==='en_cours').length+' actifs / '+planData.length+' chantiers',color:'#818cf8'},
+    {icon:'👥',titre:'RH',val:rhData.filter(e=>e.statut==='actif').length+' actifs / '+rhData.length+' employés',color:'#f472b6'},
+  ].map(c=>`<div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--r2);padding:1.1rem;border-top:3px solid ${c.color}">
+    <div style="font-size:22px;margin-bottom:6px">${c.icon}</div>
+    <div style="font-size:12px;font-weight:700;color:${c.color};text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">${c.titre}</div>
+    <div style="font-size:13px;color:var(--ink);font-weight:500">${c.val}</div>
+  </div>`).join('');
+}
+
 // Démarrage
 initTheme();
 bootApp();
@@ -3808,6 +4350,197 @@ bootApp();
 
 
 
+<!-- ══════════════ PAGE RAPPORTS ══════════════ -->
+<div id="page-rapports" class="page">
+  <!-- Stats globales -->
+  <div class="stats">
+    <div class="stat"><div class="stat-icon blue">📋</div><div class="stat-label">Total documents</div><div class="stat-value blue" id="rpt-total-docs">0</div></div>
+    <div class="stat"><div class="stat-icon green">💰</div><div class="stat-label">CA total facturé</div><div class="stat-value green" id="rpt-ca-facture">0 FCFA</div></div>
+    <div class="stat"><div class="stat-icon amber">✅</div><div class="stat-label">CA encaissé</div><div class="stat-value amber" id="rpt-ca-encaisse">0 FCFA</div></div>
+    <div class="stat"><div class="stat-icon red">⏳</div><div class="stat-label">Reste à encaisser</div><div class="stat-value red" id="rpt-reste">0 FCFA</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+    <!-- Répartition par type -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">Répartition par type de document</div></div>
+      <div id="rpt-type-bars"></div>
+    </div>
+    <!-- Répartition par statut -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">Répartition par statut</div></div>
+      <div id="rpt-statut-bars"></div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+    <!-- Top clients -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">Top 5 clients par montant TTC</div></div>
+      <div id="rpt-top-clients"></div>
+    </div>
+    <!-- Activité mensuelle -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">Activité — 6 derniers mois</div></div>
+      <div id="rpt-mensuel"></div>
+    </div>
+  </div>
+
+  <!-- Tableau récapitulatif -->
+  <div class="card">
+    <div class="card-header"><div class="card-title">Récapitulatif ERP</div></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px" id="rpt-erp-recap"></div>
+  </div>
+</div>
+
+<!-- MODAL CRM -->
+<div class="modal-overlay" id="crm-modal">
+  <div class="modal" style="width:500px">
+    <div class="modal-header">
+      <div class="modal-title" id="crm-modal-title">🎯 Nouveau prospect</div>
+      <button class="close-btn" onclick="closeModal('crm-modal')">×</button>
+    </div>
+    <div class="grid-2">
+      <div class="form-group"><label>Nom / Entreprise *</label><input type="text" id="crm-nom" placeholder="Ex: SODECI CI"></div>
+      <div class="form-group"><label>Contact</label><input type="text" id="crm-contact" placeholder="Nom du contact"></div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group"><label>Téléphone</label><input type="tel" id="crm-tel" placeholder="+225 …"></div>
+      <div class="form-group"><label>Email</label><input type="email" id="crm-email" placeholder="contact@…"></div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group"><label>Étape</label>
+        <select id="crm-etape">
+          <option value="prospect">Prospect</option>
+          <option value="contact">Contacté</option>
+          <option value="devis">Devis envoyé</option>
+          <option value="gagne">Gagné</option>
+          <option value="perdu">Perdu</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Montant estimé (FCFA)</label><input type="number" id="crm-montant" min="0" value="0"></div>
+    </div>
+    <div class="form-group"><label>Besoin / Projet</label><textarea id="crm-besoin" rows="2" placeholder="Description du besoin…"></textarea></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:.5rem">
+      <button class="btn" onclick="closeModal('crm-modal')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveCrmProspect()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL COMPTA -->
+<div class="modal-overlay" id="compta-modal">
+  <div class="modal" style="width:480px">
+    <div class="modal-header">
+      <div class="modal-title">📋 Nouvelle écriture</div>
+      <button class="close-btn" onclick="closeModal('compta-modal')">×</button>
+    </div>
+    <div class="grid-2">
+      <div class="form-group"><label>Date *</label><input type="date" id="compta-date"></div>
+      <div class="form-group"><label>Type</label>
+        <select id="compta-type">
+          <option value="recette">Recette</option>
+          <option value="depense">Dépense</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label>Libellé *</label><input type="text" id="compta-libelle" placeholder="Ex: Facture FAC-2026-001 — SODECI"></div>
+    <div class="grid-2">
+      <div class="form-group"><label>Catégorie</label>
+        <select id="compta-categorie">
+          <option>Prestations de services</option>
+          <option>Vente matériel</option>
+          <option>Achat matériel</option>
+          <option>Salaires</option>
+          <option>Loyer</option>
+          <option>Transport</option>
+          <option>Téléphone / Internet</option>
+          <option>Autre</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Montant (FCFA) *</label><input type="number" id="compta-montant" min="0" value="0"></div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:.5rem">
+      <button class="btn" onclick="closeModal('compta-modal')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveComptaEcriture()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PLANNING -->
+<div class="modal-overlay" id="plan-modal">
+  <div class="modal" style="width:520px">
+    <div class="modal-header">
+      <div class="modal-title" id="plan-modal-title">🏗️ Nouveau chantier</div>
+      <button class="close-btn" onclick="closeModal('plan-modal')">×</button>
+    </div>
+    <div class="form-group"><label>Intitulé du chantier *</label><input type="text" id="plan-titre" placeholder="Ex: Installation réseau FTTH — Résidence Angré"></div>
+    <div class="grid-2">
+      <div class="form-group"><label>Client</label><input type="text" id="plan-client" placeholder="Nom du client"></div>
+      <div class="form-group"><label>Responsable</label><input type="text" id="plan-responsable" placeholder="Technicien / Chef de projet"></div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group"><label>Date de début</label><input type="date" id="plan-debut"></div>
+      <div class="form-group"><label>Date de fin prévue</label><input type="date" id="plan-fin"></div>
+    </div>
+    <div class="form-group"><label>Statut</label>
+      <select id="plan-statut">
+        <option value="attente">En attente</option>
+        <option value="en_cours">En cours</option>
+        <option value="termine">Terminé</option>
+        <option value="annule">Annulé</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Notes</label><textarea id="plan-notes" rows="2" placeholder="Remarques, conditions d'accès…"></textarea></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:.5rem">
+      <button class="btn" onclick="closeModal('plan-modal')">Annuler</button>
+      <button class="btn btn-primary" onclick="savePlanChantier()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL RH -->
+<div class="modal-overlay" id="rh-modal">
+  <div class="modal" style="width:520px">
+    <div class="modal-header">
+      <div class="modal-title" id="rh-modal-title">👤 Nouvel employé</div>
+      <button class="close-btn" onclick="closeModal('rh-modal')">×</button>
+    </div>
+    <div class="grid-2">
+      <div class="form-group"><label>Prénom *</label><input type="text" id="rh-prenom" placeholder="Prénom"></div>
+      <div class="form-group"><label>Nom *</label><input type="text" id="rh-nom" placeholder="Nom de famille"></div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group"><label>Poste</label><input type="text" id="rh-poste" placeholder="Ex: Technicien Réseau"></div>
+      <div class="form-group"><label>Département</label>
+        <select id="rh-dept">
+          <option>Technique</option>
+          <option>Commercial</option>
+          <option>Administration</option>
+          <option>Direction</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group"><label>Date d'embauche</label><input type="date" id="rh-embauche"></div>
+      <div class="form-group"><label>Salaire mensuel (FCFA)</label><input type="number" id="rh-salaire" min="0" value="0"></div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group"><label>Téléphone</label><input type="tel" id="rh-tel" placeholder="+225 …"></div>
+      <div class="form-group"><label>Statut</label>
+        <select id="rh-statut">
+          <option value="actif">Actif</option>
+          <option value="conge">En congé</option>
+          <option value="inactif">Inactif</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:.5rem">
+      <button class="btn" onclick="closeModal('rh-modal')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveRhEmploye()">Enregistrer</button>
+    </div>
+  </div>
+</div>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
